@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CertChain - 31474 - Shreeya Tapaswi</title>
+<title>CertChain - Shreeya Tapaswi</title>
 {% raw %}
 <style>
   :root { --navy:#1f3864; --blue:#2f5496; --bg:#f2f5fb; --card:#fff; --line:#dde2ee; --text:#1b2233;
@@ -175,7 +175,8 @@
     <span id="chainPill" class="pill ok">Chain valid</span>
     <button class="btn sm light" id="demoBtn">&#9654; Guided demo</button>
     <button class="btn sm light" id="bigBtn">Projector mode</button>
-    <div class="who">31474 - Shreeya Tapaswi</div>
+    <div class="who">Shreeya Tapaswi</div>
+    <button class="btn sm light" id="logoutBtn" title="Sign out of the admin console">&#128274; Log out</button>
   </div>
 </header>
 <div id="tamperBar" class="hidden">&#9888; The ledger has been tampered with (demo). Open the Ledger tab to see exactly what broke, or undo the tampering.</div>
@@ -374,7 +375,7 @@ C2K24104,Tanvi Bhosale,B.Tech Computer Engineering,Distinction,2026-06-20</texta
   </div>
 </section>
 </main>
-<footer>31474 - Shreeya Tapaswi &middot; Blockchain Technology Mini Project &middot; SHA-256 &middot; Ed25519 &middot; Merkle tree &middot; Proof of Work</footer>
+<footer>Shreeya Tapaswi &middot; Blockchain Technology Mini Project &middot; SHA-256 &middot; Ed25519 &middot; Merkle tree &middot; Proof of Work</footer>
 
 <!-- guided demo drawer -->
 <div id="drawer" class="drawer hidden">
@@ -396,8 +397,9 @@ const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAl
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const short = (h, n = 8) => h ? h.slice(0, n) + '…' + h.slice(-4) : '';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const GET = async u => (await fetch(u)).json();
-const POST = async (u, b) => { try { const r = await fetch(u, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(b || {})}); return await r.json(); } catch (e) { return {ok:false, error:'Cannot reach the server'}; } };
+const authCheck = r => { if (r.status === 401) { location.href = '/login'; } return r; };
+const GET = async u => (await authCheck(await fetch(u))).json();
+const POST = async (u, b) => { try { const r = authCheck(await fetch(u, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(b || {})})); return await r.json(); } catch (e) { return {ok:false, error:'Cannot reach the server'}; } };
 const TABS = ['dashboard','issue','verify','registry','ledger','security','institutions','learn'];
 const DEFAULT_INST = 'Pune Institute of Computer Technology';
 let S = null, L = null, CUR = 'dashboard', selBlock = 1, lastIssued = null, studentNo = 50;
@@ -420,6 +422,7 @@ function showTab(t) {
   window.scrollTo(0, 0);
 }
 $$('#tabs button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+$('#logoutBtn').onclick = async () => { await fetch('/logout', {method:'POST'}); location.href = '/login'; };
 
 /* ---------- refresh ---------- */
 async function refresh() {

@@ -1,4 +1,4 @@
-"""[31474 - Shreeya Tapaswi]
+"""[Shreeya Tapaswi]
 Web application for the Academic Certificate Verification System.
 
 Run:  python app.py          then open http://127.0.0.1:5000
@@ -7,22 +7,50 @@ Run:  python app.py          then open http://127.0.0.1:5000
 import argparse
 import csv
 import io
+import hmac
 import json
+import os
 import re
+import secrets
 import socket
 import threading
 import time
 from functools import wraps
 from pathlib import Path
 
-from flask import Flask, Response, abort, jsonify, render_template, request
+from flask import (Flask, Response, abort, jsonify, redirect, render_template,
+                   request, session)
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from blockchain import (Blockchain, Institution, Transaction, certificate_hash,
                         merkle_levels, tx_hash, verify_signature)
 
 app = Flask(__name__)
 
-DATA_FILE = Path(__file__).with_name("data.json")
+# ------------------------------------------------------------ configuration
+# Set these as environment variables on your host (e.g. Render -> Environment):
+#   ADMIN_USER, ADMIN_PASSWORD, SECRET_KEY      (see README)
+# If ADMIN_PASSWORD is missing a random one is generated and printed at startup,
+# so the app is never left open with a default password.
+ON_HOST = bool(os.environ.get("RENDER") or os.environ.get("TRUST_PROXY"))
+ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or ""
+GENERATED_PASSWORD = False
+if not ADMIN_PASSWORD:
+    ADMIN_PASSWORD, GENERATED_PASSWORD = secrets.token_urlsafe(9), True
+
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=bool(os.environ.get("RENDER") or os.environ.get("COOKIE_SECURE")),
+    PERMANENT_SESSION_LIFETIME=8 * 3600,
+    MAX_CONTENT_LENGTH=1024 * 1024,
+)
+if ON_HOST:  # behind a reverse proxy: trust X-Forwarded-Proto/Host so QR links use https
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+DATA_FILE = Path(os.environ.get("CERTCHAIN_DATA") or Path(__file__).with_name("data.json"))
 LOCK = threading.RLock()
 DEFAULT_INSTITUTION = "Pune Institute of Computer Technology"
 FIELDS = ("student_id", "name", "course", "grade", "issue_date")
@@ -232,10 +260,88 @@ def stats():
             "issues": len(issues), "tampered": state["backup"] is not None}
 
 
+# ------------------------------------------------------------------ auth
+# Everything is private unless listed here. New routes are protected by default.
+PUBLIC_ENDPOINTS = {"index", "login", "page_verify", "page_certificate", "qr",
+                    "api_verify", "static", "short_verify", "short_admin"}
+FAILS = {}                      # ip -> (failed attempts, locked-until timestamp)
+MAX_FAILS, LOCK_SECONDS = 5, 300
+
+
+def is_admin():
+    return session.get("admin") is True
+
+
+@app.before_request
+def require_login():
+    if request.endpoint in PUBLIC_ENDPOINTS or is_admin():
+        return None
+    if request.path.startswith("/api/"):
+        return jsonify(ok=False, error="Please log in as an institution administrator."), 401
+    return redirect("/login")
+
+
+@app.after_request
+def security_headers(resp):
+    resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+    resp.headers.setdefault("X-Frame-Options", "DENY")
+    resp.headers.setdefault("Referrer-Policy", "same-origin")
+    if not request.path.startswith("/qr/"):
+        resp.headers.setdefault("Cache-Control", "no-store")
+    return resp
+
+
+def locked_for(ip):
+    tries, until = FAILS.get(ip, (0, 0))
+    return max(0, int(until - time.time())) if tries >= MAX_FAILS else 0
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if is_admin():
+        return redirect("/")
+    error = None
+    if request.method == "POST":
+        ip = request.remote_addr or "?"
+        wait = locked_for(ip)
+        if wait:
+            error = f"Too many failed attempts. Try again in {wait // 60 + 1} minute(s)."
+        else:
+            user_ok = hmac.compare_digest(request.form.get("username", "").encode(), ADMIN_USER.encode())
+            pass_ok = hmac.compare_digest(request.form.get("password", "").encode(), ADMIN_PASSWORD.encode())
+            if user_ok and pass_ok:
+                FAILS.pop(ip, None)
+                session.clear()
+                session["admin"] = True
+                session.permanent = True
+                return redirect("/")
+            tries = FAILS.get(ip, (0, 0))[0] + 1
+            FAILS[ip] = (tries, time.time() + LOCK_SECONDS)
+            error = "Incorrect username or password."
+            time.sleep(0.6)  # slow down guessing
+    return render_template("login.html", error=error), (401 if error else 200)
+
+
+@app.post("/logout")
+def logout():
+    session.clear()
+    return jsonify(ok=True)
+
+
 # ------------------------------------------------------------------ pages
+@app.get("/verify")
+def short_verify():          # easy to type: yoursite.com/verify
+    return redirect("/", code=301)
+
+
+@app.get("/admin")
+def short_admin():           # easy to type: yoursite.com/admin
+    return redirect("/login")
+
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html" if is_admin() else "public.html")
 
 
 @app.get("/verify/<h>")
@@ -412,8 +518,9 @@ def api_difficulty():
 def api_verify():
     h, details = hash_from_request(request.json or {})
     result = run_verify(h, details)
-    log("verify", f"Verification {'PASSED' if result['valid'] else 'FAILED'}: {result['reason']}")
-    save()
+    if is_admin():  # anonymous visitors can verify but never write to the ledger
+        log("verify", f"Verification {'PASSED' if result['valid'] else 'FAILED'}: {result['reason']}")
+        save()
     return jsonify(ok=True, **result)
 
 
@@ -583,6 +690,8 @@ def api_seed():
 if not load():
     new_state()
     save()
+if GENERATED_PASSWORD:  # visible in the host's log (e.g. Render -> Logs) when running under gunicorn
+    print(f"[CertChain] No ADMIN_PASSWORD set. Temporary login: {ADMIN_USER} / {ADMIN_PASSWORD}", flush=True)
 
 
 def lan_ip():
@@ -602,8 +711,10 @@ if __name__ == "__main__":
     ap.add_argument("--port", type=int, default=5000)
     args = ap.parse_args()
     print("=" * 60)
-    print(" CertChain - 31474 - Shreeya Tapaswi")
+    print(" CertChain - Shreeya Tapaswi")
     print(f" Open http://127.0.0.1:{args.port}")
+    print(f" Admin login:  {ADMIN_USER}  /  {ADMIN_PASSWORD}"
+          + ("   (generated - set ADMIN_PASSWORD to choose your own)" if GENERATED_PASSWORD else ""))
     if args.lan:
         print(f" On your phone (same Wi-Fi): http://{lan_ip()}:{args.port}")
     print("=" * 60)

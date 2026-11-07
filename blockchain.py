@@ -1,4 +1,4 @@
-"""[31474 - Shreeya Tapaswi]
+"""[Shreeya Tapaswi]
 Core blockchain for the Academic Certificate Verification System.
 
 A permissioned blockchain:

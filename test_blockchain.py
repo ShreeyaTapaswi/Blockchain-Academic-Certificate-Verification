@@ -1,4 +1,4 @@
-"""Unit tests - 31474 - Shreeya Tapaswi"""
+"""Unit tests - Shreeya Tapaswi"""
 import unittest
 
 from blockchain import (Blockchain, Institution, Transaction, certificate_hash,
