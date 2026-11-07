@@ -218,7 +218,7 @@ python -m unittest -v
 | `SECRET_KEY` | Random string that signs login cookies, e.g. output of `python -c "import secrets;print(secrets.token_hex(32))"` |
 | `RENDER` | Set automatically by Render; enables secure cookies and correct `https` QR links |
 
-**Clean URLs:** on Render the site is served at `https://<service-name>.onrender.com` with no port number. Pick a short *Name* when creating the service (e.g. `certchain`) to get `https://certchain.onrender.com`. Handy short routes: `/` (public verification), `/verify`, `/login` and `/admin`. You can also attach your own domain under *Settings → Custom Domains*.
+**Clean URLs:** on Render the site is served at `https://certchain-6012.onrender.com` with no port number. Pick a short *Name* when creating the service (e.g. `certchain`) to get `https://certchain.onrender.com`. Handy short routes: `/` (public verification), `/verify`, `/login` and `/admin`. You can also attach your own domain under *Settings → Custom Domains*.
 
 Use **one worker**: the ledger lives in a single process's memory and is saved to `data.json`. On free hosting the disk is ephemeral, so the ledger resets on redeploy. Log in and click **Load sample data** to refill it.
 
