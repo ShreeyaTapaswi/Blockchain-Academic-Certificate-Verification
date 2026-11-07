@@ -17,7 +17,7 @@ A permissioned blockchain where universities <i>issue</i> and <i>sign</i> certif
 
 <p align="center">👩‍💻 <b>Author:</b> <a href="https://github.com/ShreeyaTapaswi">Shreeya Tapaswi</a> &nbsp;·&nbsp; Blockchain Technology Mini Project</p>
 
-### 🔗 [**Live Demo → drone-delivery-optimisation.onrender.com**](https://drone-delivery-optimisation.onrender.com)
+### 🔗 [**Live Demo → certchain-6012.onrender.com**](https://certchain-6012.onrender.com)
 ---
 
 ## 📑 Contents
