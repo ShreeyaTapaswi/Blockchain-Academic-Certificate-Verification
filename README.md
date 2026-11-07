@@ -1,203 +1,163 @@
-<div align="center">
+# 🔗 CertChain: Blockchain-Based Academic Certificate Verification
 
-# 🎓 CertChain: Blockchain-based Academic Certificate Verification
+> A permissioned blockchain that lets **anyone verify an academic certificate in seconds**, with no phone call to the university, no paperwork, and no way to forge a grade.
 
-**Issue tamper-proof academic certificates. Verify them in one click.**
+**Author:** Shreeya Tapaswi (31474) · Blockchain Technology Mini Project
+**Stack:** Python · Flask · SHA-256 · Ed25519 · Merkle trees · Proof of Work · vanilla JS
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://blockchain-academic-certificate-verification.onrender.com)
-
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Web%20App-000000?logo=flask&logoColor=white)
-![Solidity](https://img.shields.io/badge/Solidity-Smart%20Contract-363636?logo=solidity&logoColor=white)
-![Tests](https://img.shields.io/badge/Tests-9%20passing-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-
-</div>
+![Dashboard](docs/screenshots/01-dashboard.png)
 
 ---
 
-## 📌 Overview
+## 📌 The problem
 
-Forged degrees and marksheets are a real problem, and verifying a certificate by emailing or calling the institution is slow. **CertChain** is a permissioned blockchain that fixes this. An institution issues a certificate, only its **SHA-256 hash** is written to the ledger, and anyone can verify the certificate instantly by recomputing that hash.
+Fake degrees are a real, expensive problem. Verifying a certificate today means emailing the university, waiting days, and trusting a PDF or a paper stamp that is easy to forge.
 
-Because only hashes are stored, **no personal data (names, grades) ever goes on-chain**.
+## 💡 The solution
 
-🔗 **Live demo:** https://blockchain-academic-certificate-verification.onrender.com
-*(Free hosting sleeps when idle, so the first load can take about a minute. The ledger resets whenever the server restarts.)*
+Each certificate is reduced to a **SHA-256 fingerprint** and recorded on a tamper-evident ledger by the issuing institution, **digitally signed with its private key**. Verification becomes a mathematical check anyone can run:
+
+> *Does this exact certificate's fingerprint exist on the ledger, signed by an authorised institution, and not revoked?*
+
+Change a single character (a grade, a name, a date) and the fingerprint is completely different, so verification fails.
+
+**Privacy by design:** only the hash goes on-chain. No names, grades or student IDs are ever stored in a block.
+
+---
+
+## ✨ Features
+
+| | Feature | What it does |
+|---|---|---|
+| ✍️ | **Issue** | Single or bulk (CSV) certificate issuing, signed with the institution's Ed25519 key |
+| 🔍 | **Verify** | Step-by-step verification: fingerprint → ledger lookup → issuer → signature → block integrity → revocation |
+| 📄 | **Printable certificate + QR** | Every certificate gets a public verify link and a scannable QR code (works from a phone on the same Wi-Fi with `--lan`) |
+| 🚫 | **Revocation** | Only the *issuing* institution can revoke, and the revocation is itself on the ledger |
+| ⛓ | **Ledger explorer** | Inspect blocks, hashes, nonces, and the full **Merkle tree** of every block |
+| 🛡 | **Security Lab** | Launch 5 real attacks (fake university, forged signature, replay, rival revocation, upgraded grade) and watch each get blocked |
+| 😈 | **Tamper simulator** | A *naive* attacker breaks the Merkle root; a *smart* attacker who re-mines the block still breaks the next block's link |
+| 🏛 | **Multi-institution** | Register institutions, each with its own key pair |
+| 🎓 | **Guided demo & Learn tab** | A built-in walkthrough for presentations (with projector mode) |
 
 ---
 
 ## 📸 Screenshots
 
 ### Issue a certificate
-The certificate is hashed, signed with the institution's Ed25519 key and mined into a new block.
+![Issue](docs/screenshots/02-issue.png)
 
-![Issue a certificate](screenshots/issue.png)
+### Verification: authentic ✅
+![Verify valid](docs/screenshots/03-verify-valid.png)
 
-### Verify: authentic ✅ vs forged ❌
+### Verification: forged grade ❌
+Upgrading *"First Class with Distinction"* to *"Distinction with Honours"* produces a completely different fingerprint, which is not on the ledger.
 
-| Genuine certificate | Grade changed by one field |
-|:---:|:---:|
-| ![Valid](screenshots/verify-valid.png) | ![Invalid](screenshots/verify-invalid.png) |
+![Verify forged](docs/screenshots/04-verify-forged.png)
 
-Altering even one character changes the hash completely, so a forged certificate is reported as *not found on the ledger*.
+### Verification: revoked certificate
+![Verify revoked](docs/screenshots/05-verify-revoked.png)
 
-### Revoke a certificate
+### Registry
+![Registry](docs/screenshots/06-registry.png)
 
-| Revoke | Verify after revoking |
-|:---:|:---:|
-| ![Revoke](screenshots/revoke.png) | ![Revoked](screenshots/verify-revoked.png) |
+### Ledger explorer with Merkle tree
+![Ledger](docs/screenshots/07-ledger.png)
 
-### Ledger explorer and tamper detection
+### Tamper detection: the chain visibly breaks 🔴
+![Tampered ledger](docs/screenshots/08-ledger-tampered.png)
 
-| Chain VALID | Chain BROKEN after tampering |
-|:---:|:---:|
-| ![Ledger](screenshots/ledger.png) | ![Tamper](screenshots/tamper.png) |
+### Security Lab: every attack blocked
+![Security lab](docs/screenshots/09-security-lab.png)
 
-The "Tamper with a block" button silently edits an old transaction. The block's stored hash no longer matches its contents, so chain validation fails and the damaged block is highlighted in red.
+### Institutions & Learn
+| Institutions | Learn |
+|---|---|
+| ![Institutions](docs/screenshots/10-institutions.png) | ![Learn](docs/screenshots/11-learn.png) |
 
----
+### Public verify page & printable certificate (with QR)
+| Public verify page | Printable certificate |
+|---|---|
+| ![Verify page](docs/screenshots/12-verify-page.png) | ![Certificate](docs/screenshots/13-certificate.png) |
 
-## ✨ Features
-
-### ⛓️ Blockchain core
-- Blocks linked by SHA-256 hashes, so any change to history is detectable
-- Proof-of-work mining (difficulty 3: block hashes start with `000`)
-- Genesis block and full chain validation (hash, proof-of-work and link checks)
-
-### 📜 Certificate management
-- **Issue:** certificate fields are hashed and recorded in a new block
-- **Verify:** recompute the hash from the printed certificate, or paste the hash directly
-- **Revoke:** the issuing institution can revoke, and revoked certificates fail verification
-- **Duplicate protection:** issuing the same certificate twice is rejected
-
-### 🔐 Security
-- Ed25519 digital signature on every transaction
-- Only registered institutions (authorised public keys) can issue or revoke
-- Only the original issuer can revoke its own certificates
-- Forged or altered certificates produce a different hash and are reported as not found
-- Privacy-preserving: only hashes are stored, never names or grades
-
-### 🖥️ Web UI
-- Four tabs: **Issue, Verify, Revoke, Ledger**
-- Green/red results with block number and issuing institution
-- Ledger explorer showing each block's hash, previous hash, nonce and transactions
-- VALID/BROKEN chain status with the tampered block highlighted
-- Demo buttons: "Tamper with a block" and "Reset ledger"
-- Responsive layout that works on a phone
-
-### 📄 Smart contract (Solidity)
-- Admin-controlled issuer whitelist
-- `issueCertificate`, `revokeCertificate` and read-only `verifyCertificate`
-- Events emitted for issuing, revoking and issuer changes
-- Deploy on [Remix](https://remix.ethereum.org) or any Ethereum network
+### Mobile
+<img src="docs/screenshots/14-mobile.png" width="300" alt="Mobile view">
 
 ---
 
 ## 🧠 How it works
 
-```mermaid
-flowchart LR
-    A[Institution] -->|1. Certificate fields| B[SHA-256 hash]
-    B -->|2. Sign with Ed25519 key| C[Transaction]
-    C -->|3. Proof of work| D[(New block on ledger)]
-    E[Verifier] -->|4. Enter details or hash| F[Recompute hash]
-    F -->|5. Look up on ledger| D
-    D -->|Authentic / Revoked / Not found| E
+```
+ Institution                          Blockchain                       Verifier
+ ───────────                          ──────────                       ────────
+ certificate details
+   │  SHA-256
+   ▼
+ fingerprint ──sign (Ed25519)──▶ pending pool ──mine (PoW)──▶ Block ──▶ re-hash the details
+                                                   │                    look up on ledger
+                                 ┌─────────────────┴───────┐            check signature
+                                 │ index · timestamp       │            check block integrity
+                                 │ merkle_root ◀── txs     │            check not revoked
+                                 │ previous_hash ──▶ link  │               │
+                                 │ nonce · hash (000…)     │               ▼
+                                 └─────────────────────────┘        ✔ authentic / ✘ not valid
 ```
 
-1. The institution enters certificate details, which are hashed together with the institution name using **SHA-256**.
-2. The hash is **signed** with the institution's private key and submitted as an `ISSUE` transaction.
-3. The ledger checks that the issuer is authorised, the signature is valid and the certificate is not a duplicate. The transaction is then mined into a block linked to the previous block.
-4. A verifier re-enters the details (or pastes the hash). The system recomputes the hash and searches the ledger.
-5. The result is **authentic**, **revoked** or **not found**. Any edit to a certificate changes its hash, so forgeries never match.
+1. **Fingerprint:** `SHA-256` of the canonical JSON of the certificate (student ID, name, course, grade, date, institution).
+2. **Sign:** the institution signs `ISSUE:<hash>` (or `REVOKE:<hash>`) with its **Ed25519** private key.
+3. **Pending pool:** the transaction waits until a block is mined, and a pending certificate is *not* valid yet.
+4. **Merkle root:** each block summarises all its transactions in one root hash.
+5. **Proof of Work:** the block hash must start with N zeros (adjustable difficulty, 1-4).
+6. **Hash chain:** each block stores the previous block's hash, so editing history breaks every block after it.
+
+### Why the attacks fail
+
+| Attack | Defence |
+|---|---|
+| Unregistered "Fake University" issues a degree | Authorised-issuer registry |
+| Attacker impersonates a real university | Ed25519 signature check |
+| Same certificate submitted twice (replay) | Duplicate-fingerprint check |
+| Rival institution revokes someone else's certificate | Only the original issuer may revoke |
+| Grade or name altered on a real certificate | Different SHA-256, so it is not on the ledger |
+| Old block edited (naive) | Merkle root mismatch |
+| Old block edited **and re-mined** (smart) | The next block's `previous_hash` link breaks; if it is the last block, the signature check fails |
 
 ---
 
-## ⛓️ The chain at a glance
-
-![CertChain blockchain diagram](screenshots/blockchain-diagram.png)
-
-Every block stores its own **hash**, the **previous block's hash** and a **nonce** found by proof of work. Because each block depends on the one before it, changing an old certificate record changes that block's hash and breaks every link after it, which is exactly what the "BROKEN" status in the ledger explorer detects.
-
----
-
-## 🗂️ Project structure
+## 🗂 Project structure
 
 ```
-Blockchain-Academic-Certificate-Verification/
-├── app.py                      # Flask server and JSON API
-├── blockchain.py               # Blocks, PoW, hashing, Ed25519, issuer registry
-├── demo.py                     # Command-line demo of every scenario
-├── test_blockchain.py          # 9 automated unit tests
-├── CertificateRegistry.sol     # Solidity smart contract version
+├── app.py                 # Flask web app + JSON API
+├── blockchain.py          # Core: hashing, Merkle tree, signing, blocks, chain, validation
+├── test_blockchain.py     # 21 unit tests
 ├── templates/
-│   └── index.html              # Web UI (Issue, Verify, Revoke, Ledger)
-├── screenshots/           # Images used in this README
-├── requirements.txt            # cryptography, flask, gunicorn
-├── LICENSE
-└── README.md
+│   ├── index.html         # Single-page UI (dashboard, issue, verify, ledger, security lab…)
+│   ├── verify.html        # Public page opened by the QR code
+│   └── certificate.html   # Printable certificate with QR
+├── docs/screenshots/      # Images used in this README
+├── requirements.txt
+└── data.json              # Created automatically at runtime (git-ignored)
 ```
+
+> ⚠️ Flask loads pages from the **`templates/`** folder. If the HTML files sit next to `app.py` instead, the app fails with `TemplateNotFound`.
 
 ---
 
-## 🚀 Getting started
-
-### Prerequisites
-- Python 3.10 or newer
-- `pip`
-
-### Run locally
+## 🚀 Run it locally
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/ShreeyaTapaswi/Blockchain-Academic-Certificate-Verification.git
 cd Blockchain-Academic-Certificate-Verification
 
-# 2. (Optional) create a virtual environment
-python -m venv venv
-venv\Scripts\activate          # Windows
-# source venv/bin/activate     # macOS / Linux
-
-# 3. Install dependencies
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 4. Start the web app
-python app.py
+python app.py                    # → http://127.0.0.1:5000
+python app.py --lan              # also reachable from a phone on the same Wi-Fi (for QR scanning)
+python app.py --port 8000        # custom port
 ```
 
-Open **http://127.0.0.1:5000** in your browser.
-
-> On Windows use `py` instead of `python` if needed. Keep `index.html` inside the `templates` folder.
-
-### Command-line demo
-
-```bash
-python demo.py
-```
-
-Sample output:
-
-```
-== 1. Issuing certificates ==
-Mined block #1 hash=00056aa852cc99e7... (2 certificates)
-
-== 2. Verifying a genuine certificate ==
-{'valid': True, 'reason': 'Certificate is authentic', 'institution': 'Example University', ...}
-
-== 3. Verifying a forged certificate (grade changed) ==
-{'valid': False, 'reason': 'Certificate not found on the ledger'}
-
-== 4. Unauthorised issuer is rejected ==
-Rejected: Issuer is not an authorised institution
-
-== 5. Revoking a certificate ==
-{'valid': False, 'reason': 'Certificate has been revoked', ...}
-
-== 6. Ledger integrity ==
-Chain valid: True
-Chain valid after tampering: False
-```
+Then click **Load sample data** on the Dashboard, or **Start guided demo** for a scripted walkthrough.
 
 ### Run the tests
 
@@ -205,112 +165,35 @@ Chain valid after tampering: False
 python -m unittest -v
 ```
 
----
+The 21 tests cover issuing, verification, pending state, revocation rules, signature and issuer checks, Merkle roots, naive and smart tampering, serialisation and difficulty.
 
-## 🔌 API reference
-
-All endpoints exchange JSON. Certificate fields are `student_id`, `name`, `course`, `grade` and `issue_date`. For verify and revoke you can send `cert_hash` instead of the fields.
-
-| Method | Endpoint | Body | Description |
-|:------:|----------|------|-------------|
-| `GET` | `/` | none | Web UI |
-| `POST` | `/api/issue` | certificate fields | Hash, sign and mine a new certificate. Returns `cert_hash`, `block`, `block_hash` |
-| `POST` | `/api/verify` | certificate fields **or** `cert_hash` | Returns `valid`, `reason`, and the `block` and `institution` when authentic |
-| `POST` | `/api/revoke` | certificate fields **or** `cert_hash` | Revoke a certificate (issuer only). Returns the block it was recorded in |
-| `GET` | `/api/ledger` | none | Full chain with a `valid` flag |
-| `POST` | `/api/tamper` | none | **Demo only:** corrupt a transaction to show tamper detection |
-| `POST` | `/api/reset` | none | **Demo only:** reset the ledger to a fresh genesis block |
-
-Example:
-
-```bash
-curl -X POST http://127.0.0.1:5000/api/issue \
-  -H "Content-Type: application/json" \
-  -d '{"student_id":"C2K24001","name":"Asha Patil","course":"B.Tech Computer Engineering","grade":"First Class with Distinction","issue_date":"2026-06-15"}'
-```
-
----
-
-## 🧪 Testing
-
-9 unit tests cover:
-
-- ✅ Valid certificate is accepted
-- ✅ Unknown certificate is rejected
-- ✅ Tampered content is rejected
-- ✅ Unauthorised issuer is rejected
-- ✅ Bad signature is rejected
-- ✅ Duplicate issuance is rejected
-- ✅ Revocation works
-- ✅ Another institution cannot revoke
-- ✅ Chain tampering is detected
-
----
-
-## 🎬 Demo walkthrough
-
-1. **Issue** a certificate, then **Verify** it (green).
-2. Change the grade and **Verify** again (red, not found).
-3. **Revoke** it, then **Verify** (revoked).
-4. Open **Ledger**, click **Tamper with a block**, and the chain shows **BROKEN**.
-5. **Reset ledger** to start over.
-
----
-
-## ☁️ Deployment (Render)
-
-1. Push this repo to GitHub.
-2. On [Render](https://render.com), choose **New → Web Service** and connect the repo.
-3. Use these settings:
+## ☁️ Deploy (e.g. Render)
 
 | Setting | Value |
-|---------|-------|
-| Runtime | Python 3 |
+|---|---|
 | Build command | `pip install -r requirements.txt` |
-| Start command | `gunicorn app:app --workers 1 --bind 0.0.0.0:$PORT` |
-| Instance type | Free |
+| Start command | `gunicorn app:app --workers 1 --threads 4` |
 
-> ⚠️ Keep `--workers 1`. The ledger lives in memory, so extra workers would each hold a different chain.
-
----
-
-## ⚠️ Limitations and future scope
-
-- Single-node simulation (no peer-to-peer network); the ledger resets when the server restarts
-- One built-in institution in the UI
-- The demo tamper and reset endpoints are open, which is fine for a demo but should be removed in production
-
-**Planned:**
-- [ ] QR codes on certificates for instant verification
-- [ ] Deployment on an Ethereum testnet
-- [ ] IPFS storage for certificate PDFs
-- [ ] Merkle trees for batch issuance
-- [ ] Persistent storage and a multi-node network
+Use **one worker**: the ledger lives in a single process's memory and is persisted to `data.json`. On free hosting the disk is ephemeral, so the ledger resets on redeploy. Click **Load sample data** to repopulate it.
 
 ---
 
-## 🛠️ Tech stack
+## 🔐 Security notes & limitations
 
-| Layer | Technology |
-|-------|------------|
-| Language | Python |
-| Backend | Flask, Gunicorn |
-| Cryptography | SHA-256, Ed25519 (`cryptography` library) |
-| Smart contract | Solidity |
-| Frontend | HTML, CSS, vanilla JavaScript |
-| Hosting | Render |
+This is an educational **proof of concept** of a *permissioned* blockchain.
+
+- Runs as a single node, with no peer-to-peer network or consensus between nodes.
+- Institution private keys are stored in `data.json` for demo convenience. **A real deployment would keep keys in an HSM or the institution's own system.** Never commit `data.json`.
+- Proof of Work here prevents silent tampering; in production a permissioned network would typically use PBFT/Raft-style consensus.
+- The certificate details (name, grade, …) are kept **off-chain** in the app's records. Only fingerprints are on-chain.
+
+## 🔭 Future work
+
+- Multi-node network with consensus, and a REST API for third-party verifiers
+- Hardware-backed key storage and key rotation
+- Student-held wallets and DigiLocker integration
+- Merkle inclusion proofs for light-client verification
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 👩‍💻 Author
-
-**Shreeya S Tapaswi**
-GitHub: [@ShreeyaTapaswi](https://github.com/ShreeyaTapaswi)
-
-⭐ If you found this project useful, consider giving it a star!
+<sub>CertChain · Shreeya Tapaswi (31474) · Blockchain Technology Mini Project</sub>

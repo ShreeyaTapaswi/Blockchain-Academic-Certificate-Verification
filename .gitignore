@@ -1,8 +1,9 @@
-.env
-node_modules/
 __pycache__/
-venv/
-build/
-dist/
-*.log
+*.pyc
 .venv/
+venv/
+.env
+*.tmp
+# Runtime ledger: contains institutions PRIVATE signing keys - never commit it.
+# app.py recreates it automatically on first run.
+data.json

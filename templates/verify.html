@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verify Certificate - CertChain | 31474 - Shreeya Tapaswi</title>
+<style>
+body{font-family:system-ui,Segoe UI,Arial,sans-serif;background:#f3f5f9;margin:0;color:#1d2433}
+header{background:#1f3a8a;color:#fff;padding:14px 24px;font-weight:600}
+main{max-width:720px;margin:24px auto;padding:0 16px}
+.banner{border-radius:12px;padding:20px 24px;color:#fff;margin-bottom:18px}
+.ok{background:#15803d}.bad{background:#b91c1c}.pend{background:#b45309}
+.banner h1{margin:0 0 4px;font-size:24px}
+.card{background:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 1px 4px #0002}
+.card h2{margin:0 0 10px;font-size:16px}
+table{width:100%;border-collapse:collapse}td{padding:6px 0;vertical-align:top}td:first-child{color:#667;width:38%}
+.step{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #eef}
+.step:last-child{border:0}.i{font-weight:700;width:20px}.t{color:#15803d}.f{color:#b91c1c}.s{color:#999}
+.d{font-size:12px;color:#667;word-break:break-all}
+.hash{font-family:Consolas,monospace;font-size:12px;word-break:break-all}
+a{color:#1f3a8a}footer{text-align:center;color:#778;font-size:12px;padding:16px}
+</style></head><body>
+<header>🔗 CertChain - Certificate Verification</header>
+<main>
+{% if r.valid %}<div class="banner ok"><h1>✔ Certificate is authentic</h1>Issued by {{ r.institution }} and recorded in block #{{ r.block }}.</div>
+{% elif r.pending %}<div class="banner pend"><h1>⏳ Pending</h1>{{ r.reason }}.</div>
+{% else %}<div class="banner bad"><h1>✘ Not valid</h1>{{ r.reason }}.</div>{% endif %}
+
+{% if r.details %}
+<div class="card"><h2>Certificate details</h2><table>
+<tr><td>Student</td><td>{{ r.details.name }}</td></tr>
+<tr><td>Student ID</td><td>{{ r.details.student_id }}</td></tr>
+<tr><td>Course</td><td>{{ r.details.course }}</td></tr>
+<tr><td>Grade</td><td>{{ r.details.grade }}</td></tr>
+<tr><td>Issue date</td><td>{{ r.details.issue_date }}</td></tr>
+<tr><td>Institution</td><td>{{ r.details.institution }}</td></tr>
+</table></div>{% endif %}
+
+<div class="card"><h2>Verification steps</h2>
+{% for s in r.steps %}<div class="step">
+<span class="i {{ 't' if s.ok else ('s' if s.ok is none else 'f') }}">{{ '✔' if s.ok else ('–' if s.ok is none else '✘') }}</span>
+<div>{{ s.label }}<div class="d">{{ s.detail }}</div></div></div>{% endfor %}</div>
+
+<div class="card"><h2>Fingerprint (SHA-256)</h2><div class="hash">{{ r.cert_hash }}</div>
+<p><a href="/certificate/{{ r.cert_hash }}">📄 Printable certificate</a></p></div>
+</main>
+<footer>CertChain - 31474 - Shreeya Tapaswi</footer>
+</body></html>

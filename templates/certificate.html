@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Certificate - CertChain | 31474 - Shreeya Tapaswi</title>
+<style>
+@page{size:A4 landscape;margin:12mm}
+body{margin:0;background:#e9edf5;font-family:Georgia,'Times New Roman',serif;color:#1d2433}
+.bar{text-align:center;padding:10px;font-family:system-ui,Arial,sans-serif}
+button{background:#1f3a8a;color:#fff;border:0;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer}
+.cert{width:1000px;max-width:96%;margin:10px auto 30px;background:#fffdf6;border:10px double #1f3a8a;padding:36px 50px;text-align:center;position:relative;box-sizing:border-box}
+.cert h1{font-size:40px;margin:0;letter-spacing:3px;color:#1f3a8a}
+.cert h3{margin:6px 0 24px;font-weight:normal;color:#667;letter-spacing:2px}
+.name{font-size:34px;font-style:italic;border-bottom:1px solid #999;display:inline-block;padding:0 30px;margin:8px 0}
+.row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px;text-align:left}
+.qr{width:120px;height:120px}.small{font-size:11px;color:#667;word-break:break-all;max-width:520px;font-family:Consolas,monospace}
+.stamp{position:absolute;top:28px;right:44px;border:3px solid;border-radius:8px;padding:4px 12px;font:700 15px system-ui,Arial,sans-serif;transform:rotate(8deg)}
+.ok{color:#15803d}.bad{color:#b91c1c}
+.foot{margin-top:14px;font-size:11px;color:#889;font-family:system-ui,Arial,sans-serif}
+@media print{.bar{display:none}body{background:#fff}.cert{margin:0;width:100%;max-width:100%}}
+</style></head><body>
+<div class="bar"><button onclick="window.print()">🖨 Print / Save as PDF</button></div>
+{% if r.details %}
+<div class="cert">
+ <div class="stamp {{ 'ok' if r.valid else 'bad' }}">{{ 'VERIFIED ON BLOCKCHAIN' if r.valid else ('PENDING' if r.pending else 'NOT VALID') }}</div>
+ <h1>CERTIFICATE</h1><h3>{{ r.details.institution }}</h3>
+ <p>This is to certify that</p>
+ <div class="name">{{ r.details.name }}</div>
+ <p>(Student ID {{ r.details.student_id }}) has successfully completed</p>
+ <p style="font-size:24px;margin:6px 0"><b>{{ r.details.course }}</b></p>
+ <p>with grade <b>{{ r.details.grade }}</b> &nbsp;·&nbsp; issued on {{ r.details.issue_date }}</p>
+ <div class="row">
+  <div><b>Certificate fingerprint</b><div class="small">{{ r.cert_hash }}</div>
+   {% if r.block is defined and r.block is not none %}<div class="small">Recorded in block #{{ r.block }}</div>{% endif %}</div>
+  <div style="text-align:center"><img class="qr" src="/qr/{{ r.cert_hash }}" alt="QR"><div class="small">Scan to verify</div></div>
+ </div>
+ <div class="foot">Verify at: {{ verify_url }}</div>
+</div>
+{% else %}<p style="text-align:center">No certificate details held for this fingerprint.</p>{% endif %}
+</body></html>

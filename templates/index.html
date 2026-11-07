@@ -3,209 +3,760 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CertChain | Academic Certificate Verification</title>
+<title>CertChain - 31474 - Shreeya Tapaswi</title>
+{% raw %}
 <style>
-  :root { --navy:#1f3864; --blue:#2f5496; --bg:#f4f6fb; --card:#fff; --line:#dde2ee;
-          --ok:#1b7f3b; --okbg:#e6f6ec; --bad:#b3261e; --badbg:#fdeceb; --muted:#5b6478; }
+  :root { --navy:#1f3864; --blue:#2f5496; --bg:#f2f5fb; --card:#fff; --line:#dde2ee; --text:#1b2233;
+          --ok:#1b7f3b; --okbg:#e6f6ec; --bad:#b3261e; --badbg:#fdeceb; --warn:#a15c00; --warnbg:#fff4e0;
+          --muted:#5b6478; --accent:#7b4dd6; }
   * { box-sizing:border-box; }
-  body { margin:0; font-family:"Segoe UI",system-ui,sans-serif; background:var(--bg); color:#1b2233; }
-  header { background:var(--navy); color:#fff; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-  .who { background:rgba(255,255,255,.14); padding:8px 16px; border-radius:20px; font-weight:600; font-size:14px; }
-  header h1 { margin:0; font-size:22px; }
-  header p { margin:4px 0 0; font-size:13px; opacity:.8; }
-  main { max-width:900px; margin:24px auto; padding:0 16px; }
-  nav { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
-  nav button { border:1px solid var(--line); background:#fff; padding:10px 18px; border-radius:8px;
-               cursor:pointer; font-size:14px; font-weight:600; color:var(--blue); }
-  nav button.active { background:var(--blue); color:#fff; border-color:var(--blue); }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; }
-  .card h2 { margin:0 0 4px; font-size:18px; color:var(--navy); }
-  .card p.sub { margin:0 0 16px; color:var(--muted); font-size:13px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .full { grid-column:1/-1; }
+  body { margin:0; font-family:"Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--text); }
+  body.big { zoom:1.18; }
+  .hidden { display:none !important; }
+  .mono { font-family:Consolas,"Courier New",monospace; word-break:break-all; }
+  .muted { color:var(--muted); }
+  header { background:linear-gradient(120deg,#1f3864,#2f5496); color:#fff; padding:14px 26px; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .logo { width:42px; height:42px; border-radius:11px; background:rgba(255,255,255,.16); display:grid; place-items:center; font-size:22px; }
+  header h1 { margin:0; font-size:21px; letter-spacing:.3px; }
+  header p { margin:2px 0 0; font-size:12px; opacity:.8; }
+  .hright { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .who { background:rgba(255,255,255,.16); padding:8px 16px; border-radius:20px; font-weight:600; font-size:14px; }
+  .pill { padding:6px 14px; border-radius:20px; font-size:13px; font-weight:700; }
+  .pill.ok { background:var(--okbg); color:var(--ok); } .pill.bad { background:var(--badbg); color:var(--bad); }
+  #tamperBar { background:var(--bad); color:#fff; padding:9px 26px; font-size:14px; font-weight:600; text-align:center; }
+  nav { display:flex; gap:4px; padding:10px 22px 0; background:#fff; border-bottom:1px solid var(--line); overflow-x:auto; position:sticky; top:0; z-index:5; }
+  nav button { border:0; background:none; padding:11px 16px; font-size:14px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; }
+  nav button:hover { color:var(--blue); }
+  nav button.active { color:var(--blue); border-bottom-color:var(--blue); }
+  main { max-width:1120px; margin:22px auto 90px; padding:0 18px; }
+  h2 { margin:0 0 4px; font-size:19px; color:var(--navy); }
+  .sub { margin:0 0 16px; color:var(--muted); font-size:13px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:16px; }
+  .card h3 { margin:0 0 10px; font-size:15px; color:var(--navy); }
+  .cols { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; align-items:start; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .full { grid-column:1/-1; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
   label { display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:4px; }
-  input { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; }
-  input:focus { outline:2px solid #b9c8ee; border-color:var(--blue); }
-  .actions { margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; }
-  .btn { background:var(--blue); color:#fff; border:0; padding:11px 22px; border-radius:8px;
-         font-size:14px; font-weight:600; cursor:pointer; }
+  input, select, textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; background:#fff; }
+  input:focus, select:focus, textarea:focus { outline:2px solid #b9c8ee; border-color:var(--blue); }
+  textarea { resize:vertical; }
+  .btn { background:var(--blue); color:#fff; border:0; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
   .btn:hover { background:var(--navy); }
-  .btn.ghost { background:#fff; color:var(--blue); border:1px solid var(--blue); }
-  .btn.danger { background:var(--bad); }
-  .btn:disabled { opacity:.6; cursor:wait; }
-  .result { margin-top:16px; padding:14px 16px; border-radius:10px; font-size:14px; display:none; }
-  .result.ok { background:var(--okbg); color:var(--ok); border:1px solid #b7e2c5; display:block; }
-  .result.bad { background:var(--badbg); color:var(--bad); border:1px solid #f3c1be; display:block; }
-  .result b.title { font-size:16px; display:block; margin-bottom:4px; }
-  .mono { font-family:Consolas,monospace; font-size:12px; word-break:break-all; }
-  .divider { text-align:center; color:var(--muted); font-size:12px; margin:14px 0 4px; }
-  .status { display:inline-block; padding:4px 12px; border-radius:20px; font-size:13px; font-weight:700; }
-  .status.ok { background:var(--okbg); color:var(--ok); }
-  .status.bad { background:var(--badbg); color:var(--bad); }
-  .block { border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:10px; background:#fafbff; }
-  .block.broken { border-color:#f3c1be; background:var(--badbg); }
-  .block h3 { margin:0 0 6px; font-size:14px; color:var(--navy); }
-  .block .row { font-size:12px; color:var(--muted); margin:2px 0; }
-  .tx { font-size:12px; margin-top:6px; padding:6px 8px; background:#fff; border:1px solid var(--line); border-radius:6px; }
-  .tag { font-weight:700; padding:1px 7px; border-radius:4px; font-size:11px; margin-right:6px; }
-  .tag.ISSUE { background:var(--okbg); color:var(--ok); }
-  .tag.REVOKE { background:var(--badbg); color:var(--bad); }
-  .hidden { display:none; }
-  footer { text-align:center; color:var(--muted); font-size:12px; margin:28px 0; }
-  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+  .btn.ghost { background:#fff; color:var(--blue); border:1px solid var(--blue); } .btn.ghost:hover { background:#eef2fb; }
+  .btn.danger { background:var(--bad); } .btn.danger:hover { background:#8c1d17; }
+  .btn.green { background:var(--ok); } .btn.green:hover { background:#14612d; }
+  .btn.light { background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.35); } .btn.light:hover { background:rgba(255,255,255,.3); }
+  .btn.sm { padding:7px 13px; font-size:13px; }
+  .btn:disabled { opacity:.55; cursor:not-allowed; }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  .chip { border:1px dashed var(--blue); color:var(--blue); background:#f6f8fe; padding:5px 12px; border-radius:16px; font-size:12px; font-weight:600; cursor:pointer; }
+  .chip:hover { background:#e6ecfb; }
+  details { margin-top:14px; border-top:1px solid var(--line); padding-top:12px; }
+  summary { cursor:pointer; font-weight:600; color:var(--blue); font-size:14px; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+  .stat { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
+  .stat .n { font-size:28px; font-weight:800; color:var(--navy); line-height:1.1; }
+  .stat .l { font-size:12px; color:var(--muted); font-weight:600; margin-top:2px; }
+  .stat.ok .n { color:var(--ok); } .stat.bad .n { color:var(--bad); }
+  .badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:700; }
+  .badge.valid { background:var(--okbg); color:var(--ok); } .badge.revoked { background:var(--badbg); color:var(--bad); }
+  .badge.pending { background:var(--warnbg); color:var(--warn); }
+  .result { margin-top:16px; padding:14px 16px; border-radius:10px; font-size:14px; }
+  .result.ok { background:var(--okbg); color:var(--ok); border:1px solid #b7e2c5; }
+  .result.bad { background:var(--badbg); color:var(--bad); border:1px solid #f3c1be; }
+  .result.warn { background:var(--warnbg); color:var(--warn); border:1px solid #f1d6a0; }
+  .result b.t { font-size:16px; display:block; margin-bottom:3px; }
+  /* chain strip */
+  .strip { display:flex; align-items:center; gap:6px; overflow-x:auto; padding:6px 2px; }
+  .mini { min-width:62px; text-align:center; border:2px solid var(--ok); background:var(--okbg); border-radius:10px; padding:7px 8px; font-size:12px; cursor:pointer; }
+  .mini b { display:block; font-size:14px; color:var(--navy); } .mini.bad { border-color:var(--bad); background:var(--badbg); }
+  .arr { color:var(--muted); font-weight:700; }
+  .log { max-height:300px; overflow:auto; }
+  .log div { padding:7px 0; border-bottom:1px solid #eef1f8; font-size:13px; display:flex; gap:9px; }
+  .log time { color:var(--muted); font-family:Consolas,monospace; font-size:12px; flex:none; }
+  .dot { width:9px; height:9px; border-radius:50%; margin-top:5px; flex:none; background:#9aa3b8; }
+  .dot.issue { background:#2f5496; } .dot.mine { background:var(--accent); } .dot.verify { background:var(--ok); }
+  .dot.revoke { background:#d97706; } .dot.attack { background:var(--bad); }
+  /* pending / mining */
+  .ptx { border:1px solid var(--line); border-radius:10px; padding:9px 12px; margin-bottom:8px; font-size:13px; background:#fafbff; }
+  .tag { font-weight:700; padding:2px 8px; border-radius:5px; font-size:11px; margin-right:6px; }
+  .tag.ISSUE { background:var(--okbg); color:var(--ok); } .tag.REVOKE { background:var(--badbg); color:var(--bad); }
+  div.mine { border:2px solid var(--accent); border-radius:14px; padding:16px; background:#f8f5ff; margin-bottom:16px; }
+  .mine .top { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-size:13px; }
+  .mbig { font-size:38px; font-weight:800; color:var(--accent); margin:6px 0 0; } .mbig small { display:block; font-size:12px; font-weight:600; color:var(--muted); }
+  .mhash { font-size:12px; margin-top:8px; background:#fff; border:1px solid #e1d8f7; border-radius:8px; padding:8px 10px; }
+  .zeros { background:var(--ok); color:#fff; padding:0 2px; border-radius:3px; font-weight:700; }
+  .mdone { margin-top:10px; font-size:13px; color:var(--ok); font-weight:600; }
+  /* verify */
+  .steps { list-style:none; margin:0; padding:0; }
+  .steps li { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid #eef1f8; font-size:14px; animation:pop .3s ease; }
+  .steps li:last-child { border:0; }
+  .sdot { width:24px; height:24px; border-radius:50%; flex:none; color:#fff; text-align:center; line-height:24px; font-weight:800; font-size:13px; }
+  .sdot.t { background:var(--ok); } .sdot.f { background:var(--bad); } .sdot.n { background:#9aa3b8; }
+  .steps small { display:block; color:var(--muted); word-break:break-all; margin-top:1px; }
+  .vbanner { display:flex; gap:16px; align-items:center; padding:18px; border-radius:12px; margin-top:12px; animation:pop .35s ease; }
+  .vbanner.ok { background:var(--okbg); color:var(--ok); border:1px solid #b7e2c5; } .vbanner.bad { background:var(--badbg); color:var(--bad); border:1px solid #f3c1be; }
+  .vicon { font-size:44px; font-weight:800; line-height:1; } .vbanner b { font-size:19px; }
+  .detail { margin-top:12px; font-size:14px; } .detail td { padding:4px 12px 4px 0; vertical-align:top; } .detail td:first-child { color:var(--muted); }
+  @keyframes pop { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  /* table */
+  table.t { width:100%; border-collapse:collapse; font-size:13px; }
+  table.t th { text-align:left; padding:9px 8px; background:#f4f6fb; color:var(--muted); font-size:12px; border-bottom:1px solid var(--line); }
+  table.t td { padding:9px 8px; border-bottom:1px solid #eef1f8; vertical-align:middle; }
+  .tablewrap { overflow-x:auto; }
+  .ra { display:flex; gap:6px; flex-wrap:wrap; }
+  a.lnk { color:var(--blue); font-weight:600; text-decoration:none; font-size:12px; border:1px solid var(--line); padding:4px 9px; border-radius:7px; background:#fff; }
+  /* ledger */
+  .banner { padding:13px 18px; border-radius:12px; font-weight:600; margin-bottom:14px; font-size:14px; }
+  .banner.ok { background:var(--okbg); color:var(--ok); border:1px solid #b7e2c5; } .banner.bad { background:var(--badbg); color:var(--bad); border:1px solid #f3c1be; }
+  .chain { display:flex; align-items:stretch; overflow-x:auto; padding:10px 4px 14px; }
+  .blk { min-width:178px; max-width:178px; border:2px solid var(--line); border-radius:12px; padding:11px 12px; background:#fff; cursor:pointer; font-size:12px; flex:none; }
+  .blk:hover { border-color:var(--blue); }
+  .blk.sel { box-shadow:0 0 0 3px #b9c8ee; border-color:var(--blue); }
+  .blk.bad { border-color:var(--bad); background:var(--badbg); }
+  .blk h4 { margin:0 0 6px; font-size:14px; color:var(--navy); }
+  .blk .r { margin:3px 0; color:var(--muted); } .blk .r b { color:var(--text); font-family:Consolas,monospace; font-weight:600; }
+  .link { flex:none; width:74px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; text-align:center; color:var(--ok); font-weight:700; }
+  .link.bad { color:var(--bad); } .link .a { font-size:24px; line-height:1; }
+  .kv { display:grid; grid-template-columns:150px 1fr; gap:6px 14px; font-size:13px; } .kv div:nth-child(odd) { color:var(--muted); font-weight:600; }
+  .tx { font-size:13px; border:1px solid var(--line); border-radius:9px; padding:8px 11px; margin-top:7px; background:#fafbff; }
+  div.issue { background:var(--badbg); color:var(--bad); border:1px solid #f3c1be; border-radius:8px; padding:8px 12px; font-size:13px; margin-top:7px; font-weight:600; }
+  .merkle { margin-top:10px; text-align:center; overflow-x:auto; }
+  .mrow { display:flex; justify-content:center; gap:8px; align-items:center; margin:7px 0; position:relative; flex-wrap:nowrap; }
+  .mnode { background:#eef2fb; border:1px solid #c7d3ef; border-radius:8px; padding:6px 10px; font-family:Consolas,monospace; font-size:12px; }
+  .mnode.root { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .mnode.leaf { background:#fff8e6; border-color:#f0d58a; }
+  .mlabel { font-size:11px; color:var(--muted); margin-left:10px; text-align:left; width:130px; }
+  .tamperbox { border:2px dashed var(--bad); border-radius:12px; padding:14px 16px; background:#fff8f7; }
+  .tamperbox h3 { color:var(--bad); }
+  /* security lab */
+  .atk { display:flex; flex-direction:column; }
+  .atk .ic { font-size:28px; } .atk p { font-size:13px; color:var(--muted); margin:4px 0 10px; flex:1; }
+  .def { font-size:12px; font-weight:700; color:var(--ok); margin-bottom:10px; }
+  .atkres { margin-top:10px; border-radius:9px; padding:10px 12px; font-size:13px; }
+  .atkres.blocked { background:var(--okbg); border:1px solid #b7e2c5; } .atkres.passed { background:var(--badbg); border:1px solid #f3c1be; }
+  .atkres b { display:block; margin-bottom:3px; }
+  /* learn */
+  .flow { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  .fstep { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; font-size:13px; position:relative; }
+  .fstep .no { width:26px; height:26px; background:var(--blue); color:#fff; border-radius:50%; display:grid; place-items:center; font-weight:700; margin-bottom:6px; }
+  .fstep b { display:block; margin-bottom:3px; color:var(--navy); }
+  .hp { font-size:12px; background:#f7f9fd; border:1px solid var(--line); border-radius:8px; padding:9px 10px; margin-top:8px; line-height:1.5; }
+  .df { background:#ffd9d6; color:var(--bad); font-weight:700; border-radius:2px; }
+  .feat { font-size:13px; } .feat b { color:var(--navy); } .feat div { padding:8px 0; border-bottom:1px solid #eef1f8; }
+  .inst { border:1px solid var(--line); border-radius:12px; padding:14px; background:#fafbff; }
+  .inst b { color:var(--navy); font-size:15px; } .inst .n { float:right; background:var(--okbg); color:var(--ok); border-radius:12px; padding:2px 10px; font-size:12px; font-weight:700; }
+  /* drawer + toasts */
+  .drawer { position:fixed; right:18px; bottom:18px; width:370px; max-width:calc(100vw - 36px); background:#fff; border:2px solid var(--blue); border-radius:16px; box-shadow:0 10px 40px rgba(31,56,100,.28); z-index:50; padding:16px 18px; }
+  .dhead { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--muted); font-weight:700; }
+  .dhead b { color:var(--blue); font-size:13px; } .dhead span { flex:1; } .dhead button { border:0; background:none; font-size:18px; cursor:pointer; color:var(--muted); }
+  .drawer h3 { margin:8px 0 8px; font-size:17px; color:var(--navy); }
+  .say { background:#f4f7ff; border-left:4px solid var(--blue); border-radius:6px; padding:9px 12px; font-size:13px; line-height:1.5; }
+  .say span { font-size:11px; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:3px; }
+  .dprog { height:5px; background:#e5eaf6; border-radius:3px; margin:10px 0 2px; overflow:hidden; } .dprog div { height:100%; background:var(--blue); transition:width .3s; }
+  #toasts { position:fixed; left:50%; transform:translateX(-50%); bottom:24px; z-index:60; display:flex; flex-direction:column; gap:8px; align-items:center; }
+  .toast { background:#1b2233; color:#fff; padding:10px 18px; border-radius:10px; font-size:14px; box-shadow:0 4px 18px rgba(0,0,0,.25); animation:pop .25s; }
+  .toast.bad { background:var(--bad); } .toast.ok { background:var(--ok); }
+  footer { text-align:center; color:var(--muted); font-size:12px; padding:0 0 30px; }
+  @media (max-width:860px) { .cols, .grid3 { grid-template-columns:1fr; } .stats { grid-template-columns:repeat(2,1fr); } .flow { grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px) { .grid2 { grid-template-columns:1fr; } .kv { grid-template-columns:1fr; } }
 </style>
+{% endraw %}
 </head>
 <body>
 <header>
-  <div>
-    <h1>CertChain</h1>
-    <p>Blockchain-based Academic Certificate Verification &middot; Issuer: {{ institution }}</p>
+  <div class="brand">
+    <div class="logo">&#9939;</div>
+    <div><h1>CertChain</h1><p>Blockchain-based Academic Certificate Verification System</p></div>
   </div>
-  <div class="who">Permissioned demo ledger</div>
+  <div class="hright">
+    <span id="chainPill" class="pill ok">Chain valid</span>
+    <button class="btn sm light" id="demoBtn">&#9654; Guided demo</button>
+    <button class="btn sm light" id="bigBtn">Projector mode</button>
+    <div class="who">31474 - Shreeya Tapaswi</div>
+  </div>
 </header>
+<div id="tamperBar" class="hidden">&#9888; The ledger has been tampered with (demo). Open the Ledger tab to see exactly what broke, or undo the tampering.</div>
+
+<nav id="tabs">
+  <button data-tab="dashboard" class="active">&#127968; Dashboard</button>
+  <button data-tab="issue">&#9997; Issue</button>
+  <button data-tab="verify">&#128269; Verify</button>
+  <button data-tab="registry">&#128203; Registry</button>
+  <button data-tab="ledger">&#9939; Ledger</button>
+  <button data-tab="security">&#128737; Security Lab</button>
+  <button data-tab="institutions">&#127963; Institutions</button>
+  <button data-tab="learn">&#127891; Learn</button>
+</nav>
+
 <main>
-  <nav>
-    <button data-tab="issue" class="active">Issue</button>
-    <button data-tab="verify">Verify</button>
-    <button data-tab="revoke">Revoke</button>
-    <button data-tab="ledger">Ledger</button>
-  </nav>
+<!-- ============================ DASHBOARD ============================ -->
+<section id="tab-dashboard">
+  <div class="actions" style="margin:0 0 16px">
+    <button class="btn" id="seedBtn">&#128230; Load sample data</button>
+    <button class="btn ghost" id="demoBtn2">&#9654; Start guided demo</button>
+    <button class="btn ghost" id="resetBtn">&#8635; Reset ledger</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="card"><h3>Chain at a glance <span class="muted" style="font-weight:400">(click a block to inspect it)</span></h3><div class="strip" id="miniChain"></div></div>
+  <div class="card"><h3>Live activity</h3><div class="log" id="logBox"></div></div>
+</section>
 
-  <!-- ISSUE -->
-  <section id="issue" class="card">
-    <h2>Issue a certificate</h2>
-    <p class="sub">The certificate is hashed, signed by the institution and recorded in a new block. Only the hash is stored on-chain.</p>
-    <div class="grid" data-form="issue">
-      <div><label>Student ID</label><input name="student_id" value="C2K24001"></div>
-      <div><label>Student name</label><input name="name" value="Asha Patil"></div>
-      <div class="full"><label>Course</label><input name="course" value="B.Tech Computer Engineering"></div>
-      <div><label>Grade</label><input name="grade" value="First Class with Distinction"></div>
-      <div><label>Issue date</label><input name="issue_date" type="date" value="2026-06-15"></div>
+<!-- ============================== ISSUE ============================== -->
+<section id="tab-issue" class="hidden">
+  <h2>Issue certificates</h2>
+  <p class="sub">The certificate is fingerprinted with SHA-256, signed by the institution and placed in the pending pool. A mined block makes it permanent.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <h3>New certificate</h3>
+        <div class="chips"><span class="chip" id="sampleStudent">&#127922; Fill a sample student</span></div>
+        <div class="grid2" id="issueForm">
+          <div class="full"><label>Issuing institution</label><select id="issueInst" class="instSel"></select></div>
+          <div><label>Student ID</label><input name="student_id"></div>
+          <div><label>Student name</label><input name="name"></div>
+          <div class="full"><label>Course</label><input name="course"></div>
+          <div><label>Grade</label><input name="grade"></div>
+          <div><label>Issue date</label><input name="issue_date" type="date"></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="issueNowBtn">&#9935; Issue &amp; mine now</button>
+          <button class="btn ghost" id="issuePendBtn">Add to pending pool</button>
+        </div>
+        <div id="issueRes"></div>
+        <details>
+          <summary>Bulk issue (many certificates in one block, with a Merkle root)</summary>
+          <p class="sub" style="margin-top:8px">One row per student: student_id, name, course, grade, issue_date</p>
+          <label>Institution</label><select id="bulkInst" class="instSel"></select>
+          <label style="margin-top:10px">CSV rows</label>
+          <textarea id="bulkCsv" rows="5" class="mono" style="font-size:12px">C2K24101,Ishaan Verma,B.Tech Computer Engineering,First Class,2026-06-20
+C2K24102,Sneha Pawar,B.Tech Computer Engineering,First Class with Distinction,2026-06-20
+C2K24103,Aditya Rane,B.Tech Computer Engineering,Second Class,2026-06-20
+C2K24104,Tanvi Bhosale,B.Tech Computer Engineering,Distinction,2026-06-20</textarea>
+          <div class="actions"><button class="btn" id="bulkBtn">Bulk issue &amp; mine one block</button></div>
+          <div id="bulkRes"></div>
+        </details>
+      </div>
     </div>
-    <div class="actions"><button class="btn" id="issueBtn">Issue &amp; mine block</button></div>
-    <div class="result" id="issueRes"></div>
-  </section>
+    <div>
+      <div class="card">
+        <h3>&#9203; Pending pool <span class="muted" style="font-weight:400">(waiting to be mined)</span></h3>
+        <div id="pendingList"></div>
+        <div style="display:flex; gap:10px; align-items:end; margin-top:12px; flex-wrap:wrap">
+          <div style="width:130px"><label>Mining difficulty</label>
+            <select id="diffSel"><option value="1">1 zero</option><option value="2">2 zeros</option><option value="3">3 zeros</option><option value="4">4 zeros</option></select></div>
+          <button class="btn green" id="mineBtn">&#9935; Mine block</button>
+        </div>
+        <p class="sub" style="margin:10px 0 0">Higher difficulty = more attempts needed = harder to rewrite history.</p>
+      </div>
+      <div id="mineBox" class="mine hidden">
+        <div class="top"><b>&#9935; Proof-of-work mining</b><span class="muted">hash must start with <code id="mineTarget"></code></span></div>
+        <div class="mbig"><span id="mineAttempts">0</span><small>attempts so far (nonce values tried)</small></div>
+        <div id="mineHash" class="mono mhash"></div>
+        <div id="mineDone" class="mdone hidden"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- VERIFY -->
-  <section id="verify" class="card hidden">
-    <h2>Verify a certificate</h2>
-    <p class="sub">Enter the certificate details exactly as printed. Even a one-character change will fail.</p>
-    <div class="grid" data-form="verify">
-      <div><label>Student ID</label><input name="student_id" value="C2K24001"></div>
-      <div><label>Student name</label><input name="name" value="Asha Patil"></div>
-      <div class="full"><label>Course</label><input name="course" value="B.Tech Computer Engineering"></div>
-      <div><label>Grade</label><input name="grade" value="First Class with Distinction"></div>
-      <div><label>Issue date</label><input name="issue_date" type="date" value="2026-06-15"></div>
+<!-- ============================== VERIFY ============================= -->
+<section id="tab-verify" class="hidden">
+  <h2>Verify a certificate</h2>
+  <p class="sub">Anyone can do this - no login, no phone call to the university. Enter the details exactly as printed on the certificate.</p>
+  <div class="card">
+    <div class="chips">
+      <span class="chip" id="vLatest">&#128209; Fill from latest certificate</span>
+      <span class="chip" id="vForgeGrade">&#9998; Forge: upgrade the grade</span>
+      <span class="chip" id="vForgeName">&#9998; Forge: change the name</span>
+      <span class="chip" id="vWrongInst">&#127963; Wrong institution</span>
     </div>
-    <div class="divider">- or verify directly by certificate hash -</div>
-    <input id="verifyHash" placeholder="Paste certificate hash (optional)" class="mono">
-    <div class="actions"><button class="btn" id="verifyBtn">Verify</button></div>
-    <div class="result" id="verifyRes"></div>
-  </section>
+    <div class="grid2" id="verifyForm">
+      <div class="full"><label>Issuing institution</label><input name="institution" list="instList" placeholder="e.g. Pune Institute of Computer Technology"></div>
+      <div><label>Student ID</label><input name="student_id"></div>
+      <div><label>Student name</label><input name="name"></div>
+      <div class="full"><label>Course</label><input name="course"></div>
+      <div><label>Grade</label><input name="grade"></div>
+      <div><label>Issue date</label><input name="issue_date" type="date"></div>
+    </div>
+    <datalist id="instList"></datalist>
+    <p class="sub" style="margin:14px 0 6px">&hellip; or paste the certificate fingerprint (hash) directly</p>
+    <input id="verifyHash" class="mono" style="font-size:12px" placeholder="64-character SHA-256 fingerprint (optional)">
+    <div class="actions"><button class="btn" id="verifyBtn">&#128269; Verify certificate</button></div>
+  </div>
+  <div id="verifyRes"></div>
+</section>
 
-  <!-- REVOKE -->
-  <section id="revoke" class="card hidden">
-    <h2>Revoke a certificate</h2>
-    <p class="sub">Only the issuing institution can revoke. Revoked certificates fail verification.</p>
-    <div class="grid" data-form="revoke">
-      <div><label>Student ID</label><input name="student_id" value="C2K24001"></div>
-      <div><label>Student name</label><input name="name" value="Asha Patil"></div>
-      <div class="full"><label>Course</label><input name="course" value="B.Tech Computer Engineering"></div>
-      <div><label>Grade</label><input name="grade" value="First Class with Distinction"></div>
-      <div><label>Issue date</label><input name="issue_date" type="date" value="2026-06-15"></div>
-    </div>
-    <div class="actions"><button class="btn danger" id="revokeBtn">Revoke certificate</button></div>
-    <div class="result" id="revokeRes"></div>
-  </section>
+<!-- ============================= REGISTRY ============================ -->
+<section id="tab-registry" class="hidden">
+  <h2>Certificate registry</h2>
+  <p class="sub">Every certificate issued through this system. Only the fingerprint is on the blockchain; the details here are the off-chain record.</p>
+  <div class="card">
+    <input id="regSearch" placeholder="Search by name, student ID, course, institution or hash..." style="margin-bottom:12px">
+    <div class="tablewrap"><table class="t"><thead><tr>
+      <th>Student</th><th>Course</th><th>Institution</th><th>Status</th><th>Block</th><th>Fingerprint</th><th>Actions</th></tr></thead>
+      <tbody id="regBody"></tbody></table></div>
+  </div>
+</section>
 
-  <!-- LEDGER -->
-  <section id="ledger" class="card hidden">
-    <h2>Ledger explorer</h2>
-    <p class="sub">Every block links to the previous block's hash. Chain status: <span id="chainStatus" class="status ok">checking...</span></p>
-    <div class="actions" style="margin-top:0">
-      <button class="btn ghost" id="refreshBtn">Refresh</button>
-      <button class="btn danger" id="tamperBtn">Tamper with a block (demo)</button>
-      <button class="btn ghost" id="resetBtn">Reset ledger</button>
+<!-- ============================== LEDGER ============================= -->
+<section id="tab-ledger" class="hidden">
+  <h2>Ledger explorer</h2>
+  <p class="sub">Each block stores the previous block's hash. Change anything and the chain visibly breaks.</p>
+  <div id="ledgerBanner" class="banner ok"></div>
+  <div class="card"><div class="chain" id="chainView"></div></div>
+  <div class="card" id="blockDetail"></div>
+  <div class="tamperbox">
+    <h3>&#128127; Attack simulator: tamper with history</h3>
+    <div class="grid2">
+      <div><label>Block to attack</label><select id="tamperBlock"></select></div>
+      <div><label>Attacker skill</label>
+        <select id="tamperSmart">
+          <option value="0">Naive - just edit a certificate</option>
+          <option value="1">Smart - edit it, fix the Merkle root and re-mine the block</option>
+        </select></div>
     </div>
-    <div id="blocks"></div>
-  </section>
+    <div class="actions">
+      <button class="btn danger" id="tamperBtn">Tamper with this block</button>
+      <button class="btn ghost" id="undoBtn">&#8630; Undo tampering</button>
+    </div>
+    <p class="sub" style="margin:10px 0 0">A naive edit breaks the block's Merkle root. A smart attacker repairs that, but the next block still points at the old hash, so the link breaks - and fixing it would mean re-mining every later block.</p>
+  </div>
+</section>
+
+<!-- ============================ SECURITY LAB ========================= -->
+<section id="tab-security" class="hidden">
+  <h2>Security lab</h2>
+  <p class="sub">Launch real attacks against the system and watch each one get rejected.</p>
+  <div class="grid3" id="attackGrid"></div>
+</section>
+
+<!-- ============================ INSTITUTIONS ========================= -->
+<section id="tab-institutions" class="hidden">
+  <h2>Institutions</h2>
+  <p class="sub">Only registered institutions (identified by their public key) can issue or revoke certificates.</p>
+  <div class="grid3" id="instGrid"></div>
+  <div class="card" style="margin-top:16px">
+    <h3>Register a new institution</h3>
+    <div style="display:flex; gap:10px; flex-wrap:wrap">
+      <input id="newInst" placeholder="e.g. Fergusson College" style="flex:1; min-width:220px">
+      <button class="btn" id="addInstBtn">Register &amp; generate key pair</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ LEARN ============================ -->
+<section id="tab-learn" class="hidden">
+  <h2>How it works</h2>
+  <p class="sub">The five ideas behind the project.</p>
+  <div class="flow" style="margin-bottom:16px">
+    <div class="fstep"><div class="no">1</div><b>Fingerprint</b>The certificate details are hashed with SHA-256. Only this hash goes on-chain.</div>
+    <div class="fstep"><div class="no">2</div><b>Sign</b>The institution signs the hash with its private Ed25519 key.</div>
+    <div class="fstep"><div class="no">3</div><b>Pending pool</b>The signed transaction waits until a block is mined.</div>
+    <div class="fstep"><div class="no">4</div><b>Mine</b>Transactions are summarised in a Merkle root and the block is sealed with proof of work.</div>
+    <div class="fstep"><div class="no">5</div><b>Verify</b>Anyone recomputes the hash and checks the ledger, issuer, signature and revocation status.</div>
+  </div>
+  <div class="card">
+    <h3>&#129514; Hash playground - the avalanche effect</h3>
+    <p class="sub" style="margin-bottom:10px">Change a single character and see how completely the SHA-256 fingerprint changes. This is why a forged certificate can never match the ledger.</p>
+    <div class="grid2">
+      <div><label>Original certificate text</label><textarea id="hpA" rows="3">Asha Patil | B.Tech Computer Engineering | First Class with Distinction</textarea></div>
+      <div><label>Modified copy</label><textarea id="hpB" rows="3">Asha Patil | B.Tech Computer Engineering | First Class with Distinction.</textarea></div>
+    </div>
+    <div class="hp mono" id="hpOutA"></div>
+    <div class="hp mono" id="hpOutB"></div>
+    <div class="result warn" id="hpStat" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+    <h3>Feature map</h3>
+    <div class="feat" id="featList"></div>
+  </div>
+</section>
 </main>
-<footer>CertChain &middot; SHA-256 &middot; Ed25519 &middot; Proof of Work &middot; MIT License</footer>
+<footer>31474 - Shreeya Tapaswi &middot; Blockchain Technology Mini Project &middot; SHA-256 &middot; Ed25519 &middot; Merkle tree &middot; Proof of Work</footer>
 
+<!-- guided demo drawer -->
+<div id="drawer" class="drawer hidden">
+  <div class="dhead"><b>GUIDED DEMO</b><span id="dstep"></span><button id="dclose" title="Close">&#10005;</button></div>
+  <div class="dprog"><div id="dbar"></div></div>
+  <h3 id="dtitle"></h3>
+  <div class="say"><span>What to say</span><div id="dsay"></div></div>
+  <div class="actions">
+    <button class="btn ghost sm" id="dback">&#9664; Back</button>
+    <button class="btn sm" id="drun">&#9654; Run this step</button>
+    <button class="btn ghost sm" id="dnext">Next &#9654;</button>
+  </div>
+</div>
+<div id="toasts"></div>
+
+{% raw %}
 <script>
-const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const short = (h, n = 8) => h ? h.slice(0, n) + '…' + h.slice(-4) : '';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const GET = async u => (await fetch(u)).json();
+const POST = async (u, b) => { try { const r = await fetch(u, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(b || {})}); return await r.json(); } catch (e) { return {ok:false, error:'Cannot reach the server'}; } };
+const TABS = ['dashboard','issue','verify','registry','ledger','security','institutions','learn'];
+const DEFAULT_INST = 'Pune Institute of Computer Technology';
+let S = null, L = null, CUR = 'dashboard', selBlock = 1, lastIssued = null, studentNo = 50;
 
-function formData(name) {
-  const o = {};
-  document.querySelectorAll(`[data-form="${name}"] input`).forEach(i => o[i.name] = i.value);
-  return o;
+function toast(m, k) { const t = document.createElement('div'); t.className = 'toast ' + (k || ''); t.textContent = m; $('#toasts').appendChild(t); setTimeout(() => t.remove(), 3600); }
+const hashHtml = (h, d) => h && h.startsWith('0'.repeat(d)) ? `<span class="zeros">${h.slice(0, d)}</span>${h.slice(d)}` : esc(h);
+function formVals(root) { const o = {}; $$(root + ' [name]').forEach(i => o[i.name] = i.value.trim()); return o; }
+function setForm(root, d) { Object.entries(d).forEach(([k, v]) => { const el = $(`${root} [name="${k}"]`); if (el) el.value = v; }); }
+const instIdByName = n => (S.institutions.find(i => i.name === n) || S.institutions[0] || {}).id;
+
+/* ---------- tabs ---------- */
+function showTab(t) {
+  CUR = t;
+  $$('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+  TABS.forEach(x => $('#tab-' + x).classList.toggle('hidden', x !== t));
+  if (t === 'ledger') renderLedger();
+  if (t === 'registry') loadRegistry();
+  if (t === 'learn') updateHash();
+  if (t === 'security') renderAttacks();
+  window.scrollTo(0, 0);
 }
-async function post(url, body, btn) {
-  if (btn) btn.disabled = true;
-  try {
-    const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body||{})});
-    return await r.json();
-  } finally { if (btn) btn.disabled = false; }
+$$('#tabs button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+
+/* ---------- refresh ---------- */
+async function refresh() {
+  [S, L] = await Promise.all([GET('/api/state'), GET('/api/ledger')]);
+  renderHeader(); renderDashboard(); renderInstitutions(); renderPending(); fillInstSelects();
+  if (CUR === 'ledger') renderLedger();
 }
-function show(el, ok, html) { el.className = 'result ' + (ok ? 'ok' : 'bad'); el.innerHTML = html; }
+function renderHeader() {
+  const ok = S.stats.chain_valid, p = $('#chainPill');
+  p.className = 'pill ' + (ok ? 'ok' : 'bad');
+  p.textContent = ok ? '● Chain valid' : '● Chain BROKEN';
+  $('#tamperBar').classList.toggle('hidden', !S.stats.tampered);
+  $('#diffSel').value = S.stats.difficulty;
+}
+function fillInstSelects() {
+  $$('.instSel').forEach(sel => {
+    const keep = sel.value;
+    sel.innerHTML = S.institutions.map(i => `<option value="${esc(i.id)}">${esc(i.name)}</option>`).join('');
+    if (keep) sel.value = keep;
+  });
+  $('#instList').innerHTML = S.institutions.map(i => `<option value="${esc(i.name)}">`).join('');
+}
+function renderDashboard() {
+  const s = S.stats;
+  const cards = [['Blocks mined', s.blocks, ''], ['Certificates', s.certificates, ''], ['Valid', s.valid, 'ok'], ['Revoked', s.revoked, s.revoked ? 'bad' : ''],
+    ['Pending', s.pending, ''], ['Institutions', s.institutions, ''], ['Difficulty', s.difficulty + ' zeros', ''], ['Chain status', s.chain_valid ? 'VALID' : 'BROKEN', s.chain_valid ? 'ok' : 'bad']];
+  $('#stats').innerHTML = cards.map(c => `<div class="stat ${c[2]}"><div class="n">${c[1]}</div><div class="l">${c[0]}</div></div>`).join('');
+  $('#miniChain').innerHTML = L.blocks.map(b => `<div class="mini ${b.issues.length ? 'bad' : ''}" data-b="${b.index}"><b>#${b.index}</b>${b.tx_count} tx</div>`).join('<span class="arr">→</span>');
+  $$('#miniChain .mini').forEach(m => m.onclick = () => { selBlock = +m.dataset.b; showTab('ledger'); });
+  $('#logBox').innerHTML = S.log.length ? S.log.map(l => `<div><time>${esc(l.t)}</time><span class="dot ${esc(l.kind)}"></span><span>${esc(l.text)}</span></div>`).join('')
+    : '<div class="muted">No activity yet. Issue a certificate or load the sample data.</div>';
+}
+function renderPending() {
+  const box = $('#pendingList');
+  box.innerHTML = S.pending.length ? S.pending.map(p => `<div class="ptx"><span class="tag ${p.kind}">${p.kind}</span><b>${esc(p.details ? p.details.name : short(p.cert_hash))}</b>
+    <div class="muted">${esc(p.issuer)} · <span class="mono">${short(p.cert_hash, 10)}</span></div></div>`).join('')
+    : '<div class="muted" style="font-size:13px">Nothing waiting. Add a certificate to the pending pool, then mine a block.</div>';
+  $('#mineBtn').disabled = !S.pending.length;
+}
+function renderInstitutions() {
+  $('#instGrid').innerHTML = S.institutions.map(i => `<div class="inst"><span class="n">${i.issued} issued</span><b>${esc(i.name)}</b>
+    <div class="muted" style="font-size:12px; margin-top:6px">Public key</div><div class="mono" style="font-size:11px">${esc(i.public_key.slice(0, 40))}…</div></div>`).join('');
+}
 
-document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('active', x === b));
-  document.querySelectorAll('main > section').forEach(s => s.classList.toggle('hidden', s.id !== b.dataset.tab));
-  if (b.dataset.tab === 'ledger') loadLedger();
-});
+/* ---------- issue + mining animation ---------- */
+const NAMES = ['Aarav Shah','Diya Menon','Kabir Sethi','Ira Kapoor','Rhea Naik','Arjun Iyer','Sana Sheikh','Vihaan Gokhale','Ishika Dandekar','Om Chavan'];
+const GRADES = ['First Class with Distinction','First Class','Distinction','Second Class'];
+function sampleStudent() {
+  studentNo++;
+  setForm('#issueForm', {student_id: 'C2K24' + String(studentNo).padStart(3, '0'), name: NAMES[studentNo % NAMES.length],
+    course: 'B.Tech Computer Engineering', grade: GRADES[studentNo % GRADES.length], issue_date: '2026-06-20'});
+}
+let miningTimer = null;
+async function animateMining(b) {
+  $('#mineBox').classList.remove('hidden'); $('#mineDone').classList.add('hidden');
+  $('#mineTarget').textContent = '0'.repeat(b.difficulty) + '…';
+  const dur = Math.min(2800, 900 + b.attempts / 25), t0 = performance.now();
+  const rnd = () => Array.from({length: 64}, () => '0123456789abcdef'[Math.floor(Math.random() * 16)]).join('');
+  clearInterval(miningTimer);
+  await new Promise(res => {
+    miningTimer = setInterval(() => {
+      const p = Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      $('#mineAttempts').textContent = Math.floor(e * b.attempts).toLocaleString();
+      if (p < 1) { $('#mineHash').textContent = rnd(); } else { clearInterval(miningTimer); $('#mineHash').innerHTML = hashHtml(b.hash, b.difficulty); res(); }
+    }, 55);
+  });
+  $('#mineAttempts').textContent = b.attempts.toLocaleString();
+  const d = $('#mineDone'); d.classList.remove('hidden');
+  d.innerHTML = `✓ Block #${b.index} sealed in ${b.elapsed_ms} ms · ${b.tx_count} transaction(s) · Merkle root <span class="mono">${short(b.merkle_root, 10)}</span>`;
+  $('#mineBox').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function certResult(el, hash, extra) {
+  $(el).innerHTML = `<div class="result ok"><b class="t">Certificate issued</b>${extra}
+    <div class="muted" style="margin-top:6px">Fingerprint</div><div class="mono" style="font-size:12px">${hash}</div>
+    <div class="actions" style="margin-top:10px"><a class="lnk" target="_blank" href="/certificate/${hash}">📄 Open printable certificate (with QR)</a>
+    <a class="lnk" href="#" data-copy="${hash}">Copy hash</a></div></div>`;
+  $$(`${el} [data-copy]`).forEach(a => a.onclick = e => { e.preventDefault(); navigator.clipboard?.writeText(a.dataset.copy); toast('Hash copied'); });
+}
+async function doIssue(mine) {
+  const body = {...formVals('#issueForm'), institution_id: $('#issueInst').value, mine};
+  const r = await POST('/api/issue', body);
+  if (!r.ok) { $('#issueRes').innerHTML = `<div class="result bad"><b class="t">Could not issue</b>${esc(r.error)}</div>`; return r; }
+  lastIssued = {cert_hash: r.cert_hash, ...body};
+  certResult('#issueRes', r.cert_hash, r.block ? `Recorded in block #${r.block.index}.` : 'Added to the <b>pending pool</b>. It is not valid until a block is mined.');
+  if (r.block) await animateMining(r.block);
+  await refresh();
+  return r;
+}
+async function doMine() {
+  $('#mineBtn').disabled = true;
+  const r = await POST('/api/mine');
+  if (!r.ok) { toast(r.error, 'bad'); renderPending(); return; }
+  await animateMining(r.block); await refresh(); toast(`Block #${r.block.index} mined`, 'ok');
+}
+async function doBulk() {
+  const r = await POST('/api/bulk', {institution_id: $('#bulkInst').value, csv: $('#bulkCsv').value});
+  if (!r.ok) { $('#bulkRes').innerHTML = `<div class="result bad"><b class="t">Bulk issue failed</b>${esc(r.error)}</div>`; return r; }
+  $('#bulkRes').innerHTML = `<div class="result ok"><b class="t">${r.added} certificates issued in block #${r.block.index}</b>All transactions share one Merkle root. Open the Ledger tab to see the Merkle tree.
+    ${r.errors.length ? '<div style="margin-top:6px;color:#a15c00">' + r.errors.map(esc).join('<br>') + '</div>' : ''}</div>`;
+  selBlock = r.block.index;
+  await animateMining(r.block); await refresh(); return r;
+}
+$('#sampleStudent').onclick = sampleStudent;
+$('#issueNowBtn').onclick = e => { e.target.disabled = true; doIssue(true).finally(() => e.target.disabled = false); };
+$('#issuePendBtn').onclick = e => { e.target.disabled = true; doIssue(false).finally(() => e.target.disabled = false); };
+$('#mineBtn').onclick = doMine;
+$('#bulkBtn').onclick = e => { e.target.disabled = true; doBulk().finally(() => e.target.disabled = false); };
+$('#diffSel').onchange = async e => { const r = await POST('/api/difficulty', {difficulty: +e.target.value}); if (!r.ok) toast(r.error, 'bad'); refresh(); };
 
-$('#issueBtn').onclick = async e => {
-  const r = await post('/api/issue', formData('issue'), e.target);
-  show($('#issueRes'), r.ok, r.ok
-    ? `<b class="title">Certificate issued</b>Recorded in block #${r.block}.<br>Certificate hash:<div class="mono">${r.cert_hash}</div>`
-    : `<b class="title">Could not issue</b>${esc(r.error)}`);
+/* ---------- verify ---------- */
+async function doVerify() {
+  const body = {...formVals('#verifyForm'), cert_hash: $('#verifyHash').value.trim()};
+  const r = await POST('/api/verify', body);
+  const box = $('#verifyRes');
+  if (!r.ok) { box.innerHTML = `<div class="result bad"><b class="t">Cannot verify</b>${esc(r.error)}</div>`; return r; }
+  box.innerHTML = `<div class="card" style="margin-top:16px"><h3>Verification checks</h3><ol class="steps" id="vsteps"></ol><div id="vfinal"></div></div>`;
+  for (const s of r.steps) {
+    await sleep(300);
+    const cls = s.ok === true ? 't' : s.ok === false ? 'f' : 'n', sym = s.ok === true ? '✓' : s.ok === false ? '✗' : '–';
+    $('#vsteps').insertAdjacentHTML('beforeend', `<li><span class="sdot ${cls}">${sym}</span><div>${esc(s.label)}<small>${esc(s.detail)}</small></div></li>`);
+  }
+  await sleep(250);
+  const d = r.details;
+  $('#vfinal').innerHTML = `<div class="vbanner ${r.valid ? 'ok' : 'bad'}"><div class="vicon">${r.valid ? '✓' : '✗'}</div>
+    <div><b>${r.valid ? 'Authentic certificate' : 'Verification failed'}</b><div>${esc(r.reason)}${r.institution ? ' · Issued by ' + esc(r.institution) : ''}${r.block != null ? ' · Block #' + r.block : ''}</div></div></div>
+    ${d ? `<table class="detail"><tr><td>Student</td><td><b>${esc(d.name)}</b> (${esc(d.student_id)})</td></tr><tr><td>Course</td><td>${esc(d.course)}</td></tr><tr><td>Grade</td><td>${esc(d.grade)}</td></tr><tr><td>Institution</td><td>${esc(d.institution)}</td></tr></table>` : ''}
+    <div class="actions"><a class="lnk" target="_blank" href="/certificate/${r.cert_hash}">📄 Printable certificate</a><a class="lnk" target="_blank" href="/verify/${r.cert_hash}">🔗 Public verify link</a>
+    <img src="/qr/${r.cert_hash}" alt="QR" width="84" height="84" style="margin-left:auto" onerror="this.remove()"></div>`;
+  refresh();
+  return r;
+}
+$('#verifyBtn').onclick = e => { e.target.disabled = true; doVerify().finally(() => e.target.disabled = false); };
+async function fillLatest() {
+  const reg = await GET('/api/registry'); const row = reg.rows.find(r => r.status !== 'pending') || reg.rows[0];
+  if (!row) return toast('No certificates yet - load the sample data', 'bad');
+  fillVerifyRow(row);
+}
+function fillVerifyRow(r) { $('#verifyHash').value = ''; setForm('#verifyForm', {institution: r.institution, student_id: r.student_id, name: r.name, course: r.course, grade: r.grade, issue_date: r.issue_date}); }
+$('#vLatest').onclick = fillLatest;
+$('#vForgeGrade').onclick = () => { const g = $('#verifyForm [name=grade]'); g.value = g.value === 'Distinction with Honours' ? 'Pass' : 'Distinction with Honours'; toast('Grade changed - now verify'); };
+$('#vForgeName').onclick = () => { const n = $('#verifyForm [name=name]'); n.value = n.value + ' Jr'; toast('Name changed - now verify'); };
+$('#vWrongInst').onclick = () => { const i = S.institutions.find(x => x.name !== $('#verifyForm [name=institution]').value); if (i) { $('#verifyForm [name=institution]').value = i.name; toast('Institution changed - now verify'); } };
+
+/* ---------- registry ---------- */
+let regRows = [];
+async function loadRegistry() {
+  const r = await GET('/api/registry?q=' + encodeURIComponent($('#regSearch').value));
+  regRows = r.rows;
+  $('#regBody').innerHTML = regRows.length ? regRows.map((c, i) => `<tr><td><b>${esc(c.name)}</b><div class="muted">${esc(c.student_id)}</div></td><td>${esc(c.course)}<div class="muted">${esc(c.grade)}</div></td>
+    <td>${esc(c.institution)}</td><td><span class="badge ${c.status}">${c.status.toUpperCase()}</span></td><td>${c.block ?? '–'}</td><td class="mono" style="font-size:11px">${short(c.cert_hash, 10)}</td>
+    <td><div class="ra"><a class="lnk" target="_blank" href="/certificate/${c.cert_hash}">📄 Certificate</a>
+    <a class="lnk" href="#" data-act="verify" data-i="${i}">🔍 Verify</a>${c.status === 'valid' ? `<a class="lnk" href="#" data-act="revoke" data-i="${i}" style="color:#b3261e">🚫 Revoke</a>` : ''}</div></td></tr>`).join('')
+    : '<tr><td colspan="7" class="muted">No certificates found.</td></tr>';
+}
+$('#regSearch').oninput = () => { clearTimeout(window._rs); window._rs = setTimeout(loadRegistry, 200); };
+$('#regBody').onclick = async e => {
+  const a = e.target.closest('[data-act]'); if (!a) return; e.preventDefault();
+  const c = regRows[+a.dataset.i];
+  if (a.dataset.act === 'verify') { fillVerifyRow(c); showTab('verify'); doVerify(); }
+  if (a.dataset.act === 'revoke') {
+    if (!confirm(`Revoke the certificate of ${c.name}? This is recorded permanently on the ledger.`)) return;
+    const r = await POST('/api/revoke', {cert_hash: c.cert_hash});
+    if (!r.ok) return toast(r.error, 'bad');
+    toast(`Revoked in block #${r.block.index}`, 'ok'); await refresh(); loadRegistry();
+  }
 };
 
-$('#verifyBtn').onclick = async e => {
-  const body = formData('verify');
-  const h = $('#verifyHash').value.trim();
-  if (h) body.cert_hash = h;
-  const r = await post('/api/verify', body, e.target);
-  if (!r.ok) return show($('#verifyRes'), false, `<b class="title">Error</b>${esc(r.error)}`);
-  show($('#verifyRes'), r.valid, r.valid
-    ? `<b class="title">&#10003; Authentic certificate</b>Issued by ${esc(r.institution)} &middot; block #${r.block}<div class="mono">${r.cert_hash}</div>`
-    : `<b class="title">&#10007; Not valid</b>${esc(r.reason)}<div class="mono">${r.cert_hash}</div>`);
-};
-
-$('#revokeBtn').onclick = async e => {
-  const r = await post('/api/revoke', formData('revoke'), e.target);
-  show($('#revokeRes'), r.ok, r.ok
-    ? `<b class="title">Certificate revoked</b>Recorded in block #${r.block}.`
-    : `<b class="title">Could not revoke</b>${esc(r.error)}`);
-};
-
-async function loadLedger() {
-  const r = await (await fetch('/api/ledger')).json();
-  const st = $('#chainStatus');
-  st.textContent = r.valid ? 'VALID' : 'BROKEN - tampering detected';
-  st.className = 'status ' + (r.valid ? 'ok' : 'bad');
-  // find first block whose own hash/link is inconsistent for highlighting
-  $('#blocks').innerHTML = r.blocks.map((b, i) => {
-    const linkBad = i > 0 && b.previous_hash !== r.blocks[i-1].hash;
-    const broken = !r.valid && (b.transactions.some(t => t.cert_hash === '0'.repeat(64)) || linkBad);
-    return `<div class="block ${broken ? 'broken' : ''}">
-      <h3>Block #${b.index}${b.index === 0 ? ' (genesis)' : ''}</h3>
-      <div class="row">Hash: <span class="mono">${b.hash}</span></div>
-      <div class="row">Previous: <span class="mono">${b.previous_hash}</span></div>
-      <div class="row">Nonce: ${b.nonce}</div>
-      ${b.transactions.map(t => `<div class="tx"><span class="tag ${t.kind}">${t.kind}</span><span class="mono">${t.cert_hash}</span></div>`).join('')}
-    </div>`;
+/* ---------- ledger ---------- */
+const kindText = {merkle:'Merkle root mismatch', hash:'Hash mismatch', pow:'Proof of work failed', link:'Chain link broken', signature:'Invalid signature'};
+function merkleHtml(levels, issuesExist) {
+  const rows = [...levels].reverse();
+  return rows.map((lv, ri) => {
+    const isRoot = ri === 0, isLeaf = ri === rows.length - 1;
+    const label = rows.length === 1 ? 'Single transaction (leaf = root)' : isRoot ? 'Merkle root' : isLeaf ? 'Transactions (SHA-256 of each)' : 'SHA-256(left + right)';
+    return `<div class="mrow">${lv.map(h => `<div class="mnode ${isRoot ? 'root' : isLeaf ? 'leaf' : ''}" title="${h}">${h.slice(0, 7)}…</div>`).join('')}<span class="mlabel">${label}</span></div>`;
   }).join('');
 }
-$('#refreshBtn').onclick = loadLedger;
-$('#tamperBtn').onclick = async e => {
-  const r = await post('/api/tamper', {}, e.target);
-  if (!r.ok) alert(r.error);
-  loadLedger();
+function renderLedger() {
+  if (!L) return;
+  const b = $('#ledgerBanner');
+  b.className = 'banner ' + (L.valid ? 'ok' : 'bad');
+  b.innerHTML = L.valid ? '✓ Ledger is valid - every hash, Merkle root, signature and link checks out.'
+    : `✗ Ledger is BROKEN - ${L.issues.length} problem(s) found: ` + L.issues.map(i => `Block #${i.block} (${kindText[i.kind] || i.kind})`).join(', ');
+  if (selBlock >= L.blocks.length) selBlock = L.blocks.length - 1;
+  $('#chainView').innerHTML = L.blocks.map((blk, i) => {
+    const bad = blk.issues.length, nextLinkBad = L.blocks[i + 1] && L.blocks[i + 1].issues.some(x => x.kind === 'link');
+    return `<div class="blk ${bad ? 'bad' : ''} ${i === selBlock ? 'sel' : ''}" data-b="${i}"><h4>Block #${blk.index}${i === 0 ? ' · Genesis' : ''}</h4>
+      <div class="r">Hash <b>${short(blk.hash, 7)}</b></div><div class="r">Prev <b>${i === 0 ? '0000…' : short(blk.previous_hash, 7)}</b></div>
+      <div class="r">Nonce <b>${blk.nonce.toLocaleString()}</b></div><div class="r">${blk.tx_count} transaction(s)</div>
+      <div class="r" style="color:${bad ? '#b3261e' : '#1b7f3b'};font-weight:700">${bad ? '✗ ' + blk.issues.length + ' problem(s)' : '✓ intact'}</div></div>`
+      + (i < L.blocks.length - 1 ? `<div class="link ${nextLinkBad ? 'bad' : ''}"><div class="a">${nextLinkBad ? '✗' : '→'}</div>prev-hash<br>${nextLinkBad ? 'link broken' : 'link ok'}</div>` : '');
+  }).join('');
+  $$('#chainView .blk').forEach(el => el.onclick = () => { selBlock = +el.dataset.b; renderLedger(); });
+  const blk = L.blocks[selBlock];
+  $('#blockDetail').innerHTML = `<h3>Block #${blk.index} details</h3>
+    <div class="kv"><div>Block hash</div><div class="mono">${hashHtml(blk.hash, blk.difficulty)}</div><div>Previous hash</div><div class="mono">${esc(blk.previous_hash)}</div>
+    <div>Stored Merkle root</div><div class="mono">${esc(blk.merkle_root)}</div><div>Recomputed root</div><div class="mono" style="color:${blk.merkle_root === blk.computed_merkle_root ? '#1b7f3b' : '#b3261e'}">${esc(blk.computed_merkle_root)} ${blk.merkle_root === blk.computed_merkle_root ? '✓' : '✗ differs'}</div>
+    <div>Nonce / difficulty</div><div>${blk.nonce.toLocaleString()} attempts · ${blk.difficulty} leading zeros</div><div>Mined at</div><div>${new Date(blk.timestamp * 1000).toLocaleString()}</div></div>
+    ${blk.issues.map(i => `<div class="issue">✗ ${esc(kindText[i.kind] || i.kind)}: ${esc(i.message)}</div>`).join('')}
+    ${blk.transactions.length ? '<h3 style="margin-top:16px">Transactions</h3>' + blk.transactions.map(t => `<div class="tx"><span class="tag ${t.kind}">${t.kind}</span><b>${t.details ? esc(t.details.name) + ' · ' + esc(t.details.course) : 'Unknown certificate'}</b>
+      <div class="muted">${esc(t.issuer)} · <span class="mono" style="font-size:11px">${short(t.cert_hash, 14)}</span></div></div>`).join('')
+      + '<h3 style="margin-top:16px">Merkle tree <span class="muted" style="font-weight:400">- one root summarises every transaction</span></h3><div class="merkle">' + merkleHtml(blk.merkle_levels) + '</div>'
+      : '<p class="muted">The genesis block has no transactions.</p>'}`;
+  const cand = L.blocks.filter(x => x.index >= 1 && x.tx_count);
+  const sel = $('#tamperBlock'), keep = sel.value;
+  sel.innerHTML = cand.map(x => `<option value="${x.index}">Block #${x.index} (${x.tx_count} tx)</option>`).join('') || '<option value="">No blocks yet</option>';
+  if (keep && cand.some(x => String(x.index) === keep)) sel.value = keep;
+  $('#tamperBtn').disabled = S.stats.tampered || !cand.length;
+  $('#undoBtn').disabled = !S.stats.tampered;
+}
+async function doTamper(block, smart) {
+  const r = await POST('/api/tamper', {block, smart});
+  if (!r.ok) { toast(r.error, 'bad'); return r; }
+  selBlock = block; await refresh(); toast('Block ' + block + ' tampered - chain is now broken', 'bad'); return r;
+}
+async function doUndo() { const r = await POST('/api/undo_tamper'); if (!r.ok) return toast(r.error, 'bad'); await refresh(); toast('Original ledger restored', 'ok'); return r; }
+$('#tamperBtn').onclick = () => doTamper(+$('#tamperBlock').value, $('#tamperSmart').value === '1');
+$('#undoBtn').onclick = doUndo;
+
+/* ---------- security lab ---------- */
+const ATTACKS = [
+  {id:'fake_issuer', ic:'🏫', title:'Fake university', desc:'An unregistered institution signs a PhD certificate with its own (valid) key.', def:'Defence: authorised-issuer registry'},
+  {id:'bad_signature', ic:'🕵', title:'Forged signature', desc:'An attacker claims to be a real university but signs with a different private key.', def:'Defence: Ed25519 digital signatures'},
+  {id:'duplicate', ic:'♻', title:'Replay / duplicate issue', desc:'The same certificate is submitted a second time.', def:'Defence: duplicate fingerprint check'},
+  {id:'wrong_revoker', ic:'🚫', title:'Rival revokes a certificate', desc:'One institution tries to revoke another institution\'s certificate.', def:'Defence: only the issuer can revoke'},
+  {id:'forged_certificate', ic:'✏', title:'Upgraded grade', desc:'A genuine certificate is presented with the grade changed.', def:'Defence: SHA-256 fingerprint'},
+  {id:'tamper', ic:'⛓', title:'Rewrite history', desc:'Edit an old block on the ledger - naive or smart attacker.', def:'Defence: Merkle root, hash chain, proof of work'}
+];
+function renderAttacks() {
+  if ($('#attackGrid').children.length) return;
+  $('#attackGrid').innerHTML = ATTACKS.map(a => `<div class="card atk"><div class="ic">${a.ic}</div><h3>${a.title}</h3><p>${a.desc}</p><div class="def">${a.def}</div>
+    <button class="btn danger sm" data-atk="${a.id}">${a.id === 'tamper' ? 'Open the Ledger attack simulator →' : 'Launch attack'}</button><div id="atk-${a.id}"></div></div>`).join('');
+  $$('[data-atk]').forEach(b => b.onclick = () => b.dataset.atk === 'tamper' ? showTab('ledger') : runAttack(b.dataset.atk));
+}
+async function runAttack(id) {
+  renderAttacks();
+  const r = await POST('/api/attack', {type: id}), box = $('#atk-' + id);
+  if (!r.ok) { box.innerHTML = `<div class="atkres passed"><b>Cannot run</b>${esc(r.error)}</div>`; return r; }
+  box.innerHTML = `<div class="atkres ${r.blocked ? 'blocked' : 'passed'}"><b>${r.blocked ? '🛡 ATTACK BLOCKED' : '⚠ Attack succeeded'}</b><div>${esc(r.attempt)}</div>
+    <div style="margin-top:4px"><b style="display:inline">System response:</b> ${esc(r.response)}</div></div>`;
+  refresh(); return r;
+}
+
+/* ---------- institutions ---------- */
+$('#addInstBtn').onclick = async () => {
+  const r = await POST('/api/institution', {name: $('#newInst').value});
+  if (!r.ok) return toast(r.error, 'bad');
+  $('#newInst').value = ''; toast('Institution registered with a new Ed25519 key pair', 'ok'); refresh();
 };
-$('#resetBtn').onclick = async e => { await post('/api/reset', {}, e.target); loadLedger(); };
+
+/* ---------- learn: hash playground + feature map ---------- */
+let hpTimer;
+async function updateHash() {
+  const a = $('#hpA').value, b = $('#hpB').value;
+  const r = await POST('/api/sha256', {texts: [a, b]}); if (!r.hashes) return;
+  const [ha, hb] = r.hashes; let diff = 0;
+  const html = [...hb].map((c, i) => c !== ha[i] ? (diff++, `<span class="df">${c}</span>`) : c).join('');
+  $('#hpOutA').innerHTML = '<b>Original:</b> ' + ha; $('#hpOutB').innerHTML = '<b>Modified:</b> ' + html;
+  $('#hpStat').innerHTML = diff ? `<b>${diff} of 64</b> characters changed (${Math.round(diff / 64 * 100)}%) - from a tiny edit. Expect ~94% for any change.` : 'Identical text gives an identical fingerprint.';
+}
+$('#hpA').oninput = $('#hpB').oninput = () => { clearTimeout(hpTimer); hpTimer = setTimeout(updateHash, 150); };
+const FEATURES = [
+  ['Issue &amp; sign', 'SHA-256 fingerprint + Ed25519 signature per certificate', 'Issue'],
+  ['Pending pool &amp; mining', 'Transactions wait, then a block is mined with live proof-of-work animation', 'Issue'],
+  ['Bulk issue + Merkle tree', 'Many certificates in one block, summarised by one Merkle root', 'Issue / Ledger'],
+  ['Step-by-step verification', '6 visible checks: hash, ledger, issuer, signature, block integrity, revocation', 'Verify'],
+  ['Printable certificate + QR', 'Certificate page with a QR code that opens a public verify link', 'Registry'],
+  ['Registry with search &amp; revoke', 'Search every certificate; revoke with one click (issuer only)', 'Registry'],
+  ['Multiple institutions', 'Register institutions, each with its own key pair', 'Institutions'],
+  ['Visual ledger explorer', 'Linked blocks, hashes, Merkle tree, per-block problems', 'Ledger'],
+  ['Tamper simulator', 'Naive and smart attacker, instantly detected, with undo', 'Ledger'],
+  ['Security lab', 'Five real attacks launched against the system and blocked', 'Security Lab'],
+  ['Adjustable difficulty', '1-4 leading zeros: see how work grows with difficulty', 'Issue'],
+  ['Persistence', 'Ledger and keys are saved to data.json and survive restarts', 'All'],
+  ['Guided demo', 'Narrated 11-step walkthrough for your presentation', 'Header button']
+];
+$('#featList').innerHTML = FEATURES.map(f => `<div><b>${f[0]}</b> - ${f[1]} <span class="badge pending" style="float:right">${f[2]}</span></div>`).join('');
+
+/* ---------- dashboard buttons ---------- */
+async function doSeed() { const r = await POST('/api/seed'); if (!r.ok) return toast(r.error, 'bad'); selBlock = 1; await refresh(); toast('Sample data loaded', 'ok'); }
+$('#seedBtn').onclick = () => { if (!S.stats.certificates || confirm('This replaces the current ledger with sample data. Continue?')) doSeed(); };
+$('#resetBtn').onclick = async () => { if (!confirm('Reset the ledger? All certificates and institutions you added will be removed.')) return; await POST('/api/reset'); selBlock = 1; $('#verifyRes').innerHTML = ''; $('#issueRes').innerHTML = ''; await refresh(); toast('Ledger reset'); };
+$('#bigBtn').onclick = () => document.body.classList.toggle('big');
+
+/* ---------- guided demo ---------- */
+const ANANYA = {student_id:'C2K24050', name:'Ananya Sharma', course:'B.Tech Computer Engineering', grade:'First Class with Distinction', issue_date:'2026-06-20'};
+const MEERA = {institution: DEFAULT_INST, student_id:'C2K24003', name:'Meera Kulkarni', course:'B.Tech Computer Engineering', grade:'Distinction', issue_date:'2026-06-15'};
+const DEMO = [
+  {title:'Load sample data', say:'We start with three institutions and a few certificates already on the chain, one of them revoked and one waiting in the pending pool.',
+   run: async () => { showTab('dashboard'); await doSeed(); }},
+  {title:'The avalanche effect', say:'A certificate is turned into a SHA-256 fingerprint. Changing even one character changes almost the whole hash, so a forged certificate can never match the ledger.',
+   run: async () => { showTab('learn'); }},
+  {title:'Issue a certificate', say:'The institution fingerprints the certificate, signs it with its private key and mines a block. Watch the proof-of-work: the hash must start with three zeros, found by trying thousands of nonces.',
+   run: async () => { showTab('issue'); setForm('#issueForm', ANANYA); $('#issueInst').value = instIdByName(DEFAULT_INST); await doIssue(true); }},
+  {title:'Bulk issue and Merkle tree', say:'Many certificates can go in one block. Their fingerprints are combined into a Merkle tree and only the root is sealed into the block, so changing any one of them changes the root.',
+   run: async () => { showTab('issue'); $('#bulkInst').value = instIdByName(DEFAULT_INST); const r = await doBulk(); if (r.ok) { selBlock = r.block.index; await sleep(700); showTab('ledger'); } }},
+  {title:'Verify a genuine certificate', say:'Anyone can verify. The system recomputes the fingerprint and runs six checks: ledger lookup, authorised issuer, signature, block integrity and revocation status.',
+   run: async () => { showTab('verify'); setForm('#verifyForm', {institution: DEFAULT_INST, ...ANANYA}); $('#verifyHash').value = ''; await doVerify(); }},
+  {title:'Catch a forged certificate', say:'Now the grade is upgraded from First Class with Distinction to Distinction with Honours. The fingerprint no longer exists on the ledger, so verification fails.',
+   run: async () => { showTab('verify'); setForm('#verifyForm', {institution: DEFAULT_INST, ...ANANYA, grade:'Distinction with Honours'}); await doVerify(); }},
+  {title:'Attack the system', say:'We launch two real attacks: a fake university and a forged signature. Both are rejected before reaching the pending pool.',
+   run: async () => { showTab('security'); await runAttack('fake_issuer'); await sleep(500); await runAttack('bad_signature'); }},
+  {title:'Revoke a certificate', say:'The issuing institution revokes the certificate. Revocation is itself a signed transaction recorded on the chain, and verification now reports it as revoked.',
+   run: async () => { const r = await POST('/api/revoke', {cert_hash: lastIssued ? lastIssued.cert_hash : ''}); if (!r.ok) return toast(r.error, 'bad');
+     await refresh(); showTab('verify'); setForm('#verifyForm', {institution: DEFAULT_INST, ...ANANYA}); await doVerify(); }},
+  {title:'Tamper with history', say:'An attacker secretly edits a certificate inside block 1. The block\'s Merkle root no longer matches, and the whole chain is flagged as broken.',
+   run: async () => { showTab('ledger'); selBlock = 1; await doTamper(1, false); renderLedger(); }},
+  {title:'Verification notices tampering', say:'A different certificate in the tampered block now fails the integrity check, even though that certificate itself was not edited. You cannot trust a block that has been altered.',
+   run: async () => { showTab('verify'); setForm('#verifyForm', MEERA); $('#verifyHash').value = ''; await doVerify(); }},
+  {title:'Undo the tampering', say:'We restore the original ledger. In a real network, other nodes would reject the altered chain, and a smart attacker would have to re-mine every later block.',
+   run: async () => { await doUndo(); showTab('ledger'); }}
+];
+let demoI = 0, demoRan = false;
+function showDemo(i) {
+  demoI = Math.max(0, Math.min(DEMO.length - 1, i)); demoRan = false;
+  const d = DEMO[demoI];
+  $('#drawer').classList.remove('hidden');
+  $('#dstep').textContent = `Step ${demoI + 1} of ${DEMO.length}`; $('#dbar').style.width = ((demoI + 1) / DEMO.length * 100) + '%';
+  $('#dtitle').textContent = d.title; $('#dsay').textContent = d.say;
+  $('#drun').textContent = '▶ Run this step'; $('#drun').disabled = false;
+  $('#dback').disabled = demoI === 0; $('#dnext').textContent = demoI === DEMO.length - 1 ? 'Finish' : 'Next ▶';
+}
+async function runDemoStep() {
+  const b = $('#drun'); b.disabled = true; b.textContent = 'Running…';
+  try { await DEMO[demoI].run(); } catch (e) { toast('Step failed: ' + e.message, 'bad'); }
+  demoRan = true; b.disabled = false; b.textContent = '↻ Run again';
+}
+$('#demoBtn').onclick = $('#demoBtn2').onclick = () => showDemo(0);
+$('#dclose').onclick = () => $('#drawer').classList.add('hidden');
+$('#dback').onclick = () => showDemo(demoI - 1);
+$('#dnext').onclick = () => demoI === DEMO.length - 1 ? ($('#drawer').classList.add('hidden'), toast('Demo finished', 'ok')) : showDemo(demoI + 1);
+$('#drun').onclick = runDemoStep;
+
+/* ---------- start ---------- */
+sampleStudent();
+refresh().then(() => { if (S.stats.certificates === 0) $('#logBox').insertAdjacentHTML('afterbegin', '<div class="muted">Tip: click “Load sample data” or “Start guided demo” to begin.</div>'); });
 </script>
+{% endraw %}
 </body>
 </html>
