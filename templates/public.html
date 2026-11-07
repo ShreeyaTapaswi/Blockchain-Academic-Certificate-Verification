@@ -43,7 +43,10 @@ a.lnk{color:var(--blue);font-weight:600;text-decoration:none}a.lnk:hover{text-de
 </style></head><body>
 <header>
   <div class="brand"><div class="logo">&#9939;</div>CertChain</div>
-  <a href="/login">&#128274; Institution login</a>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:14px;opacity:.9">Built by <b>Shreeya Tapaswi</b></span>
+    <a href="/login">&#128274; Institution login</a>
+  </div>
 </header>
 <section class="hero">
   <h1>Verify an academic certificate</h1>
@@ -77,7 +80,7 @@ a.lnk{color:var(--blue);font-weight:600;text-decoration:none}a.lnk:hover{text-de
     <div><b>3 &middot; Integrity</b>The block, its Merkle root and chain links are re-checked, along with revocation.</div>
   </div>
 </main>
-<footer>CertChain &middot; Blockchain Technology Mini Project &middot; Shreeya Tapaswi</footer>
+<footer>CertChain &middot; Blockchain Technology Mini Project &middot; Made by <b>Shreeya Tapaswi</b> &middot; <a class="lnk" href="https://github.com/ShreeyaTapaswi/Blockchain-Academic-Certificate-Verification">GitHub</a></footer>
 <script>
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

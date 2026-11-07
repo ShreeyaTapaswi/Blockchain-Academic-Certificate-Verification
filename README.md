@@ -15,6 +15,8 @@
 <p align="center"><b>Verify any academic certificate in seconds: no phone calls, no paperwork, no forged grades.</b><br>
 A permissioned blockchain where universities <i>issue</i> and <i>sign</i> certificates, and anyone on the internet can <i>verify</i> them.</p>
 
+<p align="center">👩‍💻 <b>Author:</b> <a href="https://github.com/ShreeyaTapaswi">Shreeya Tapaswi</a> &nbsp;·&nbsp; Blockchain Technology Mini Project</p>
+
 <!-- Live demo: add your deployed link here, e.g.  🌐 **Live demo:** https://your-app.onrender.com -->
 
 ---
@@ -257,4 +259,10 @@ This is an educational **proof of concept** of a *permissioned* blockchain.
 
 ---
 
-<p align="center"><sub>Built by <b>Shreeya Tapaswi</b> · Blockchain Technology Mini Project</sub></p>
+## 👩‍💻 Author
+
+**Shreeya Tapaswi**: designed and built CertChain end to end (blockchain core, web app, security and UI) as a Blockchain Technology mini project.
+
+[![GitHub](https://img.shields.io/badge/GitHub-ShreeyaTapaswi-181717?logo=github)](https://github.com/ShreeyaTapaswi)
+
+<p align="center"><sub>⭐ If you found this useful, consider starring the repo.</sub></p>
