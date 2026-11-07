@@ -1,5 +1,4 @@
-"""[31474 - Shreeya Tapaswi]
-Web UI for the Academic Certificate Verification System.
+"""Web UI for the Academic Certificate Verification System.
 
 Run:  python app.py   then open http://127.0.0.1:5000
 """
@@ -9,7 +8,7 @@ from blockchain import Blockchain, Institution, Transaction, certificate_hash
 
 app = Flask(__name__)
 
-INSTITUTION_NAME = "Pune Institute of Computer Technology"
+INSTITUTION_NAME = "Example University"
 state = {}
 
 

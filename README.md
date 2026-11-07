@@ -22,9 +22,6 @@ Forged degrees and marksheets are a real problem, and verifying a certificate by
 
 Because only hashes are stored, **no personal data (names, grades) ever goes on-chain**.
 
-> **Mini Project: Blockchain Technology**
-> Shreeya S Tapaswi (31474), Pune Institute of Computer Technology (PICT)
-
 🔗 **Live demo:** https://blockchain-academic-certificate-verification.onrender.com
 *(Free hosting sleeps when idle, so the first load can take about a minute. The ledger resets whenever the server restarts.)*
 
@@ -130,7 +127,6 @@ Blockchain-Academic-Certificate-Verification/
 │   └── index.html              # Web UI (Issue, Verify, Revoke, Ledger)
 ├── screenshots/           # Images used in this README
 ├── requirements.txt            # cryptography, flask, gunicorn
-├── Certificate_Verification_Mini_Project_Report.docx
 ├── LICENSE
 └── README.md
 ```
@@ -176,10 +172,10 @@ Sample output:
 
 ```
 == 1. Issuing certificates ==
-Mined block #1 hash=00022b8c23a213f4... (2 certificates)
+Mined block #1 hash=00056aa852cc99e7... (2 certificates)
 
 == 2. Verifying a genuine certificate ==
-{'valid': True, 'reason': 'Certificate is authentic', 'institution': 'Pune Institute of Computer Technology', ...}
+{'valid': True, 'reason': 'Certificate is authentic', 'institution': 'Example University', ...}
 
 == 3. Verifying a forged certificate (grade changed) ==
 {'valid': False, 'reason': 'Certificate not found on the ledger'}

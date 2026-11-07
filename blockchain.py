@@ -1,5 +1,4 @@
-"""[31474 - Shreeya Tapaswi]
-Core blockchain for the Academic Certificate Verification System.
+"""Core blockchain for the Academic Certificate Verification System.
 
 A minimal permissioned blockchain: each block stores a list of certificate
 transactions (ISSUE / REVOKE), is linked to the previous block by hash and is

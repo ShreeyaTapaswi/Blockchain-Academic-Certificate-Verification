@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/// @author 31474 - Shreeya Tapaswi
+/// @author Shreeya S Tapaswi
 /// @title CertificateRegistry
 /// @notice On-chain registry of academic certificate hashes. Only authorised
 ///         institutions can issue or revoke; anyone can verify.

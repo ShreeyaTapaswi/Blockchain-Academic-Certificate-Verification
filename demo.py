@@ -1,5 +1,4 @@
-"""[31474 - Shreeya Tapaswi]
-Demo: issue, verify, tamper-detect and revoke certificates."""
+"""Demo: issue, verify, tamper-detect and revoke certificates."""
 from blockchain import Blockchain, Institution, Transaction, certificate_hash
 
 
@@ -12,17 +11,17 @@ def issue(chain, inst, **cert):
 
 def main():
     print("=" * 60)
-    print("Blockchain Certificate Verification - 31474 - Shreeya Tapaswi")
+    print("CertChain - Blockchain Certificate Verification")
     print("=" * 60)
     chain = Blockchain()
-    pict = Institution("Pune Institute of Computer Technology")
-    chain.register_institution(pict)
+    inst = Institution("Example University")
+    chain.register_institution(inst)
 
     print("== 1. Issuing certificates ==")
     cert = dict(student_id="C2K24001", name="Asha Patil", course="B.Tech Computer Engineering",
                 grade="First Class with Distinction", issue_date="2026-06-15")
-    h1 = issue(chain, pict, **cert)
-    h2 = issue(chain, pict, student_id="C2K24002", name="Rohan Deshmukh",
+    h1 = issue(chain, inst, **cert)
+    h2 = issue(chain, inst, student_id="C2K24002", name="Rohan Deshmukh",
                course="B.Tech Computer Engineering", grade="First Class", issue_date="2026-06-15")
     block = chain.mine_pending()
     print(f"Mined block #{block.index} hash={block.hash[:16]}... ({len(block.transactions)} certificates)")
@@ -32,7 +31,7 @@ def main():
 
     print("\n== 3. Verifying a forged certificate (grade changed) ==")
     forged = dict(cert, grade="Distinction with Honours")
-    print(chain.verify_certificate(certificate_hash(institution=pict.name, **forged)))
+    print(chain.verify_certificate(certificate_hash(institution=inst.name, **forged)))
 
     print("\n== 4. Unauthorised issuer is rejected ==")
     fake = Institution("Fake University")
@@ -42,7 +41,7 @@ def main():
         print("Rejected:", e)
 
     print("\n== 5. Revoking a certificate ==")
-    chain.add_transaction(Transaction("REVOKE", h2, pict.public_key_hex, pict.sign(f"REVOKE:{h2}")))
+    chain.add_transaction(Transaction("REVOKE", h2, inst.public_key_hex, inst.sign(f"REVOKE:{h2}")))
     chain.mine_pending()
     print(chain.verify_certificate(h2))
 

@@ -1,4 +1,4 @@
-"""Unit tests - 31474 - Shreeya Tapaswi"""
+"""Unit tests for the CertChain blockchain core."""
 import unittest
 
 from blockchain import Blockchain, Institution, Transaction, certificate_hash
@@ -6,7 +6,7 @@ from blockchain import Blockchain, Institution, Transaction, certificate_hash
 
 def make():
     chain = Blockchain()
-    inst = Institution("PICT")
+    inst = Institution("Example University")
     chain.register_institution(inst)
     return chain, inst
 
@@ -18,7 +18,7 @@ def issue_tx(inst, h, kind="ISSUE"):
 class CertTests(unittest.TestCase):
     def setUp(self):
         self.chain, self.inst = make()
-        self.h = certificate_hash("1", "A", "BTech", "A", "2026-01-01", "PICT")
+        self.h = certificate_hash("1", "A", "BTech", "A", "2026-01-01", "Example University")
 
     def test_issue_and_verify(self):
         self.chain.add_transaction(issue_tx(self.inst, self.h))
@@ -31,7 +31,7 @@ class CertTests(unittest.TestCase):
     def test_tampered_content_invalid(self):
         self.chain.add_transaction(issue_tx(self.inst, self.h))
         self.chain.mine_pending()
-        other = certificate_hash("1", "A", "BTech", "A+", "2026-01-01", "PICT")
+        other = certificate_hash("1", "A", "BTech", "A+", "2026-01-01", "Example University")
         self.assertFalse(self.chain.verify_certificate(other)["valid"])
 
     def test_unauthorised_issuer_rejected(self):
