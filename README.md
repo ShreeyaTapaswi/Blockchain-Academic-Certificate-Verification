@@ -114,6 +114,14 @@ flowchart LR
 
 ---
 
+## ⛓️ The chain at a glance
+
+![CertChain blockchain diagram](screenshots/blockchain-diagram.png)
+
+Every block stores its own **hash**, the **previous block's hash** and a **nonce** found by proof of work. Because each block depends on the one before it, changing an old certificate record changes that block's hash and breaks every link after it, which is exactly what the "BROKEN" status in the ledger explorer detects.
+
+---
+
 ## 🗂️ Project structure
 
 ```
