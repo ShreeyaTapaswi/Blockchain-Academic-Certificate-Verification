@@ -18,10 +18,17 @@ A permissioned blockchain where universities <i>issue</i> and <i>sign</i> certif
 <p align="center">👩‍💻 <b>Author:</b> <a href="https://github.com/ShreeyaTapaswi">Shreeya Tapaswi</a> &nbsp;·&nbsp; Blockchain Technology Mini Project</p>
 
 ### 🔗 [**Live Demo → certchain-6012.onrender.com**](https://certchain-6012.onrender.com)
+🎬 [**Watch the full demo video (MP4)**](docs/demo.mp4)
+
+<p align="center">
+  <img src="docs/demo.gif" alt="CertChain demo: issue, verify, detect a forgery, revoke, tamper with the ledger and run attacks" width="880">
+  <br><sub>Issue → verify → catch a forged grade → revoke → tamper with the chain → 5 attacks blocked (shown at 2× speed)</sub>
+</p>
+
 ---
 
 ## 📑 Contents
-[The problem](#-the-problem) · [The solution](#-the-solution) · [Features](#-features) · [Screenshots](#-screenshots) · [How it works](#-how-it-works) · [Security model](#-security-model) · [Run locally](#-run-it-locally) · [Deploy](#%EF%B8%8F-deploy-render) · [Project structure](#-project-structure) · [Limitations](#-limitations--future-work)
+[Demo](#-demo-walkthrough) · [The problem](#-the-problem) · [The solution](#-the-solution) · [Features](#-features) · [Screenshots](#-screenshots) · [How it works](#-how-it-works) · [Security model](#-security-model) · [Run locally](#-run-it-locally) · [Deploy](#%EF%B8%8F-deploy-render) · [Project structure](#-project-structure) · [Limitations](#-limitations--future-work)
 
 ---
 
@@ -36,6 +43,24 @@ Each certificate is reduced to a **SHA-256 fingerprint** and recorded on a tampe
 Change one character (a grade, a name, a date) and the fingerprint is completely different, so the check fails.
 
 🔒 **Privacy by design:** only the hash goes on-chain. No names, grades or student IDs are ever stored in a block.
+
+---
+
+## 🎬 Demo walkthrough
+
+The [demo video](docs/demo.mp4) shows the complete flow in about 90 seconds:
+
+| Step | What happens |
+|---|---|
+| 1️⃣ **Public page** | Anyone can verify a certificate with no account |
+| 2️⃣ **Admin login** | Issuing, revoking and tampering are behind a login |
+| 3️⃣ **Load sample data** | 3 institutions, 7 certificates, 5 mined blocks |
+| 4️⃣ **Issue & mine** | A certificate is fingerprinted, signed (Ed25519) and mined with Proof of Work |
+| 5️⃣ **Verify** | The genuine certificate passes every check ✅ |
+| 6️⃣ **Forged grade** | One changed field gives a different SHA-256, so verification fails ❌ |
+| 7️⃣ **Revoke** | The issuer revokes a certificate and it is recorded on the ledger |
+| 8️⃣ **Tamper with history** | Editing an old block visibly breaks the chain 🔴 |
+| 9️⃣ **Security Lab** | Fake university, forged signature, replay, rival revoke and grade-edit attacks are all blocked 🛡 |
 
 ---
 
