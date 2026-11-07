@@ -21,14 +21,14 @@ A permissioned blockchain where universities <i>issue</i> and <i>sign</i> certif
 🎬 [**Watch the full demo video (MP4)**](docs/demo.mp4)
 
 <p align="center">
-  <img src="docs/demo.gif" alt="CertChain demo: issue, verify, detect a forgery, revoke, tamper with the ledger and run attacks" width="880">
-  <br><sub>Issue → verify → catch a forged grade → revoke → tamper with the chain → 5 attacks blocked (shown at 2× speed)</sub>
+  <img src="docs/demo.gif" alt="CertChain demo: public verification shows Verified and Not valid results, then issue, revoke, tamper and attack demos" width="880">
+  <br><sub>Public check → ✅ authentic → ❌ forged grade → ❌ revoked → printable certificate stamps → admin console (shown at 2× speed)</sub>
 </p>
 
 ---
 
 ## 📑 Contents
-[Demo](#-demo-walkthrough) · [The problem](#-the-problem) · [The solution](#-the-solution) · [Features](#-features) · [Screenshots](#-screenshots) · [How it works](#-how-it-works) · [Security model](#-security-model) · [Run locally](#-run-it-locally) · [Deploy](#%EF%B8%8F-deploy-render) · [Project structure](#-project-structure) · [Limitations](#-limitations--future-work)
+[Demo](#-demo-walkthrough) · [Verified vs Not valid](#-verified-vs-not-valid) · [The problem](#-the-problem) · [The solution](#-the-solution) · [Features](#-features) · [Screenshots](#-screenshots) · [How it works](#-how-it-works) · [Security model](#-security-model) · [Run locally](#-run-it-locally) · [Deploy](#%EF%B8%8F-deploy-render) · [Project structure](#-project-structure) · [Limitations](#-limitations--future-work)
 
 ---
 
@@ -48,19 +48,41 @@ Change one character (a grade, a name, a date) and the fingerprint is completely
 
 ## 🎬 Demo walkthrough
 
-The [demo video](docs/demo.mp4) shows the complete flow in about 90 seconds:
+The [demo video](docs/demo.mp4) (about 2 minutes) follows a certificate from the public verification page into the admin console:
 
 | Step | What happens |
 |---|---|
-| 1️⃣ **Public page** | Anyone can verify a certificate with no account |
-| 2️⃣ **Admin login** | Issuing, revoking and tampering are behind a login |
-| 3️⃣ **Load sample data** | 3 institutions, 7 certificates, 5 mined blocks |
-| 4️⃣ **Issue & mine** | A certificate is fingerprinted, signed (Ed25519) and mined with Proof of Work |
-| 5️⃣ **Verify** | The genuine certificate passes every check ✅ |
-| 6️⃣ **Forged grade** | One changed field gives a different SHA-256, so verification fails ❌ |
-| 7️⃣ **Revoke** | The issuer revokes a certificate and it is recorded on the ledger |
+| 1️⃣ **Public verification** | Anyone types in the certificate details, with no account |
+| 2️⃣ **Authentic ✅** | The genuine certificate passes all 6 checks and shows a green banner |
+| 3️⃣ **Forged grade ❌** | One changed field gives a different SHA-256, and the result is **Not valid** |
+| 4️⃣ **Revoked ❌** | A certificate revoked by its issuer is reported as **Not valid** |
+| 5️⃣ **By fingerprint** | Verify directly from the 64-character SHA-256 |
+| 6️⃣ **Printable certificate** | Stamped **VERIFIED ON BLOCKCHAIN** or **NOT VALID**, with a QR code |
+| 7️⃣ **Admin console** | Login, issue and mine a block, verify, revoke |
 | 8️⃣ **Tamper with history** | Editing an old block visibly breaks the chain 🔴 |
-| 9️⃣ **Security Lab** | Fake university, forged signature, replay, rival revoke and grade-edit attacks are all blocked 🛡 |
+| 9️⃣ **Security Lab** | Fake university, forged signature, replay, rival revoke and grade edit are all blocked 🛡 |
+
+---
+
+## ✅ Verified vs ❌ Not valid
+
+Every verification ends in one clear result, shown on the public page, on the shareable link (opened by the QR code) and as a stamp on the printable certificate.
+
+| ✅ Authentic | ❌ Not valid (forged grade) | ❌ Not valid (revoked) |
+|---|---|---|
+| ![Authentic](docs/screenshots/17-public-authentic.png) | ![Forged](docs/screenshots/18-public-not-valid.png) | ![Revoked](docs/screenshots/19-public-revoked.png) |
+| Found on the ledger, correctly signed, block intact, not revoked | Changed details give a different fingerprint that is not on the ledger | The issuing institution revoked it; the revocation is on the ledger |
+
+| Verified certificate | Not valid certificate |
+|---|---|
+| ![Verified stamp](docs/screenshots/20-certificate-verified.png) | ![Not valid stamp](docs/screenshots/21-certificate-not-valid.png) |
+| Stamped **VERIFIED ON BLOCKCHAIN** | Stamped **NOT VALID** |
+
+<details>
+<summary>🔗 Shareable result page (what the QR code opens)</summary>
+
+![Shareable result](docs/screenshots/22-shareable-result.png)
+</details>
 
 ---
 
