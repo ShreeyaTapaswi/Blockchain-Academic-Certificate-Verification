@@ -306,8 +306,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## 👩‍💻 Author
 
-**Shreeya S Tapaswi** (31474)
-Pune Institute of Computer Technology (PICT)
+**Shreeya S Tapaswi**
 GitHub: [@ShreeyaTapaswi](https://github.com/ShreeyaTapaswi)
 
 ⭐ If you found this project useful, consider giving it a star!
